@@ -1,0 +1,120 @@
+.admin-feedback-page {
+    background-color: var(--background-color-secondary);
+    padding: 20px 30px;
+  }
+  
+  .feedback-title {
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 36px;
+    color: var(--primary-color);
+  }
+
+  /* sort section */
+  .filter-sort-controls{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex; /* Enables flexbox for layout */
+    justify-content: flex-end; /* Aligns content to the right */
+    font-size: 24px;
+  }
+
+  /* Change the border color of the select box when hovered */
+  .admin-feedback-page .ant-select-selector:hover {
+    border-color: var(--primary-color) !important; /* Hover border color */
+    box-shadow: 0 0 6px rgba(30, 2, 80, 0.6) !important;
+  }
+
+  .ant-select-focused:where(.css-dev-only-do-not-override-49qm).ant-select-outlined:not(.ant-select-disabled):not(.not-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+    border-color:var(--primary-color);
+    box-shadow: 0 0 6px rgba(30, 2, 80, 0.6) !important;
+  }
+
+  .ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled){
+    background-color: var(--text-color-light);
+  }
+
+  /* Sort button */
+  .sort_button {
+    background-color: #ffffff; 
+    border: 1px solid #c5c9ce; 
+    color:#000000;
+    padding: 5px 15px;
+    font-size: 14px;
+  }
+
+  .sort_button:hover {
+    background-color: #ffffff !important; 
+    color: var(--primary-color) !important; 
+    border-color: var(--primary-color) !important; 
+    border-width: 1.5px !important;
+    transition: all 0.3s ease in;
+    box-shadow: 0 0 6px rgba(30, 2, 80, 0.6) !important;
+  }
+
+  /* Card Section */
+  /* Ensure all cards have the same height */
+  .feedback-card {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: space-between; /* Push actions to the bottom */
+    height: 100%; /* Ensure all cards take full height */
+  }
+
+  .feedback-card-content {
+    flex-grow: 1; /* Allow the content to expand and fill available space */
+  }
+
+  .feedback-text {
+    word-wrap: break-word; /* Ensure long text doesn't overflow */
+  }
+
+  .feedback-card-actions {
+    display: flex; /* Align buttons in a row */
+    justify-content:center; /* Space out the buttons evenly */
+    margin-top: auto; /* Push the buttons to the bottom of the card */
+    gap: 8px; /* Add spacing between buttons */
+  }
+
+  .reply_button {
+    background-color: var(--primary-color);
+    color: #fff;
+    /* flex: 1; */
+  }
+  
+  .reply_button:hover {
+    background-color: var(--secondary-color) !important; 
+    border-color:var(--secondary-color) !important;
+  }
+
+  .admin-feedback-page .ant-card {
+    display: flex;
+    flex-direction: column;  /* Stack children vertically */
+    height: 100%;  /* Make sure the card stretches to fill the available height */
+  }
+
+  .admin-feedback-page .feedback-card-content {
+    flex-grow: 1;  /* Allow the content to expand and fill the remaining space */
+  }
+
+  .ant-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  /* Ensure content is spaced evenly */
+    height: 100%;  /* Ensures the content stretches to fill the card */
+  }
+
+  .feedback-card-header {
+    font-weight: bold;
+  }
+
+  .feedback-card-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto; /* Ensure footer stays at the bottom */
+  }
+
+  
+
+ 
+  

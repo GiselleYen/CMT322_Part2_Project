@@ -1,0 +1,188 @@
+.best-intern-container {
+  width: 100%;
+  height: 550px !important;
+  margin-top: -20px;
+  }
+  
+  .bestintern_subtitle {
+    width: 100%;
+    text-align: center;
+    margin-top: 70px; 
+    margin-bottom: 40px; 
+  }
+  .bestintern_subtitle h2 {
+    color: var(--secondary-color); /* Orange color for the header text */
+    font-size: 36px; /* Adjust font size to match the example */
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .bestintern_subtitle p {
+    font-size: 18px;
+    color: var(--text-color-secondary); /* Light gray color for the subtitle */
+    font-style: italic;
+    margin-top: 10px;
+  }
+  
+  .carousel-navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  }
+  
+  /* Default Navigation Button Styles */
+  .nav-button {
+    margin: 0 10px; /* Add spacing between buttons */
+    background-color: transparent; /* Default background */
+    color: var(--primary-color); /* Match primary theme */
+    border: 2px solid var(--primary-color);
+    font-weight: bold;
+    transition: all 0.1s ease-in-out;
+  }
+  
+  .nav-button:hover {
+    background-color: var(--secondary-color); /* Add hover effect */
+    color: white;
+  }
+  
+  .nav-button.active {
+    background-color: var(--primary-color); /* Highlight active button */
+    color: white;
+    border-color: var(--primary-color);
+    transform: scale(1.1); /* Add slight zoom effect */
+  }
+  
+  
+  .A_custom-modal .modal-title {
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .A_custom-modal .modal-title h4{
+    color: var(--primary-color);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: -15px;
+    margin-bottom: 15px;
+  }
+  
+  .A_custom-modal .custom-bullet-points ul {
+    margin-left: -4px; /* Adjust indentation */
+  }
+  
+  .A_custom-modal .custom-bullet-points li {
+    margin-bottom: 2px !important; /* Adjust spacing between list items */
+  }
+  
+  /* Add styles for the separator line */
+  .A_custom-modal .separator-line {
+    border-top: 2px solid #c5c9ce;  /* Light gray line */
+    margin-top: 20px;  
+    margin-bottom: -10px;
+  }
+  
+  .A_custom-modal .modal-contact h4 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 25px;
+  }
+  
+  .A_custom-modal .modal-contact pre {
+    margin-top: -4px;
+    font-size: 14px;
+  
+  }
+  
+  .A_custom-modal .modal-contact-info a {
+    color: #348aae; /* Change --your-color to the desired color */
+    text-decoration: none; /* Optional: removes underline if you don't want it */
+  }
+  
+  .A_custom-modal .modal-contact-info a:hover {
+    color: var(--secondary-color); /* Optional: color change on hover */
+  }
+  
+  .file-name {
+    margin-left: 10px;
+    font-style: italic;
+    color: #333;
+  }
+
+  .modal-buttons{
+    margin-top: 2px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 8px; /* Space between buttons */
+  }
+
+
+  /* Modal button */
+  .modal-buttons .save-button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 9px 18px;
+    font-size: 14px;
+  }
+  
+  .modal-buttons .save-button:hover {
+    background-color: var(--secondary-color); /* Darker green when hovered */
+  }
+
+
+  .modal-buttons .cancel-button {
+    background-color: #ffffff; /* Light gray background */
+    border: 1px solid #c5c9ce; /* Border color */
+    color:#000000;
+    padding: 5px 15px;
+    font-size: 14px;
+  }
+
+  .modal-buttons .cancel-button:hover {
+    background-color: #ffffff !important; /* Ensure background stays white */
+    color: var(--primary-color) !important; /* Text color changes to primary color */
+    border-color: var(--primary-color) !important; /* Border color changes to primary color */
+    border-width: 1.5px !important;
+    transition: all 0.3s ease in;
+  }
+  
+  .A_custom-modal .ant-modal-content {
+    background-color: #efeff8; /* Set the background color */
+  }
+
+
+  .A_custom-form {
+    background-color: #efeff8; /* Change form background color */
+    padding: 20px; /* Adjust padding */
+    border-radius: 8px; /* Add rounded corners */
+    box-shadow: none; /* Remove the shadow */
+  }
+  
+
+  .A_custom-modal .ant-modal-close {
+    background-color: #e2e2fd !important; /* Custom background color */
+    color: #1e0250; /* Custom text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 16px;
+    font-weight: bold;
+  }
+  
+  .A_custom-modal .ant-modal-close:hover{
+
+    background-color: #eb7a244e !important;
+  }
+
+  .A_custom-modal .ant-input {
+    border-color: #1e0250; /* Custom border color */
+  }
+  
+  .A_custom-modal .ant-input:focus {
+    border-color: #1e0250; /* Border color on focus */
+    box-shadow: 0 0 6px rgba(30, 2, 80, 0.6); /* Optional: Add focus shadow */
+  }
+  

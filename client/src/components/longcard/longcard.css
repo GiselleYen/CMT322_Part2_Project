@@ -1,0 +1,42 @@
+.longcard-content {
+  display: flex;
+  flex-direction: column;
+    height: 100%; /* Take full height of the card */
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* .longcard-achiever-rank {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-color-secondary);
+  margin-bottom: -45px;
+  overflow: hidden;
+} */
+
+.longcard-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: -10px;
+}
+
+.longcard-position {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-color-secondary);
+  margin-top: -15px;
+  margin-bottom: 10px;
+}
+
+.longcard-quote {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-color-primary);
+  margin-top: -8px;
+}
+
+.btn-lccontainer {
+  position: absolute; /* Fix the button location */
+  bottom: 20px; /* Distance from the bottom of the card */
+  right: 20px; /* Align to the right */
+}

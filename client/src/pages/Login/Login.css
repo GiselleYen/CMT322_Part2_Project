@@ -1,0 +1,109 @@
+/* login.css */
+.login-page{
+    background-image: url("../../assets/images/bg.jpg"); 
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    position: relative; /* Required for the pseudo-element */
+    display: flex;
+    justify-content: space-between; /* Space out the two containers */
+    align-items: flex-start; /* Align items to the top */
+    height: 510px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding does not affect width */
+    overflow: hidden;
+}
+
+.event-info-container {
+    width: 45%;  
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    margin-top: 70px;
+    margin-left: 120px;
+  }
+
+.event-info-container h1 {
+    margin: 10px 0;
+    color: white;
+    margin-bottom: 20px;
+    font-size: 40px;
+    color: var(--secondary-color);
+}
+
+.event-info-container h2 {
+    margin: 10px 0;
+    color: white;
+    font-size: 24px;
+    font-style: italic;
+}
+
+.event-info-container h4{
+    margin-top: 20px;
+    color: white;
+    font-style: italic;
+}
+
+.login-container {
+    position: absolute;
+    right: 0;
+    width: 480px;
+    height: 460px;
+    padding: 32px;
+    border: 2px;
+    border-color: var(--primary-color);
+    border-radius: 10px; 
+    margin: 20px 50px 15px auto;
+    background-color:var(--background-color-secondary) ;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+p{
+    margin-bottom: 20px;
+}
+
+.forgot-pswd {
+    text-align: right;
+    text-decoration: underline;
+    color: var(--primary-color);
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.forgot-pswd:hover{
+    color: var(--secondary-color);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px 10px;
+    margin-top: 10px;
+}
+
+.register-link {
+    position: absolute;
+    bottom: 0;
+    left: 0;            
+    right: 0;            
+    /* padding-bottom: 10px !important; */
+    text-align: center !important;
+}
+
+.register-link span {
+    color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: underline;
+}
+.register-link span:hover {
+    color: var(--secondary-color);
+}
+  
+
+ 
+  

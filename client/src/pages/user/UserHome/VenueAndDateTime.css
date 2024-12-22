@@ -1,0 +1,96 @@
+.venue-banner {
+    padding: 20px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 500px;
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    width: 100%;
+  }
+  
+  .venue-banner-content {
+    max-width: 1200px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .event-title {
+    font-size: 48px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+  
+  .event-info {
+    font-size: 18px;
+  }
+  
+  .event-info div {
+    margin-bottom: 10px;
+  }
+  
+  .event-info strong {
+    font-weight: 700;
+  }
+  
+  .event-date, .event-time, .event-venue {
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+  }
+  
+  .event-date {
+    /* background-color: #f39c12; */
+    width: 600px;
+    font-size: 24px;
+    color: white;
+    padding: 10px;
+    margin: 0 auto 15px auto;
+    margin-bottom: 10px;
+  }
+  
+  .event-time {
+    /* background-color: #16a085; */
+    width: 600px;
+    font-size: 24px;
+    color: white;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 0 auto;
+  }
+  
+  .event-venue {
+    /* background-color: #e74c3c; */
+    width: 600px;
+    font-size: 24px;
+    color: white;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 0 auto;
+  }
+
+  .join-button {
+    background-color: var(--secondary-color); /* Change this to your preferred color */
+    height: 60px;
+    width: 350px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 28px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+  
+  .join-button:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    background-color: darken(var(--secondary-color), 10%); /* Darkens the button color on hover */
+  }
+  
+  

@@ -1,0 +1,20 @@
+/* Default Button Styles */
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: var( --primary-color); /* Use the primary color from your global styles */
+    color: var(--text-color-light);
+    transition: background-color 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: var(--secondary-color); 
+    border-color:var(--secondary-color) ;
+  }
+  
+  
+
+
+  

@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --primary-font: 'Roboto', sans-serif;
+  --secondary-font: 'Arial', sans-serif;
+
+  --primary-color: #1e0250;
+  --secondary-color:  #eb7b24;
+
+  --home-bg-color:#364d79;
+
+  --text-color-primary: #333333;
+  --text-color-secondary: #666666;
+  --text-color-light: #f6f6f6;
+
+  --background-color-main: #f0f0f0;
+  --background-color-secondary: #f4f7fa;
+
+  --hover-color-main:#c5c9ce;
+
+  --dropdown-menu-color:#ffffff;
+  --container-bg-color:white;
+
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --error-color: #f44336;
+  --info-color: #e8c6f5;
+
+  --primary-color-light: #3a2a70;
+  --primary-color-dark: #0f0140;
+  --secondary-color-light: #ff8a50;
+  --secondary-color-dark: #c41c00;
+}
+
+* {
+  font-family: var(--primary-font);  /* Apply primary font globally */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* {
+  font-family: var(--primary-font);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 28px;  
+}
+
+h2 {
+  font-size: 24px; 
+}
+
+h3 {
+  font-size: 22px;   
+}
+
+h4 {
+  font-size: 20px; 
+}
+
+h5 {
+  font-size: 18px;  
+}
+
+h6 {
+  font-size: 16px; 
+}
+
+body {
+  font-size: 16px;    
+}
+
+
+
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;  /* Stack the footer and content */
+}
+
+/* Modal Button */
+.save_button {
+  background-color: var(--primary-color) !important;
+  color: #fff;
+  padding: 9px 18px;
+  font-size: 14px;
+}
+
+.save_button:hover {
+  background-color: var( --secondary-color)!important; 
+  border-color:var(--secondary-color) !important;
+  color: #fff !important;
+}
+
+.cancel-button {
+  background-color: #ffffff; 
+  border: 1px solid #c5c9ce; 
+  color:#000000;
+  padding: 5px 15px;
+  font-size: 14px;
+}
+
+
+.cancel_button:hover {
+  background-color: #ffffff !important; 
+  color: var(--primary-color) !important; 
+  border-color: var(--primary-color) !important; 
+  border-width: 1.5px !important;
+  transition: all 0.3s ease in;
+}
+
+.delete-confirm-button:hover {
+  background-color: var(--secondary-color)!important;
+  color: #fff!important;
+  border-color:var(--secondary-color) !important;
+}
+
+.delete-confirm-button {
+  background-color: var( --primary-color)!important; 
+  color: var(--text-color-light)!important;
+  border-color:var(--primary-color) !important;
+}
+
+
+.ant-modal-close {
+  background-color: #e2e2fd !important; /* Custom background color */
+  color: #1e0250 !important; /* Custom text color */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 8px 16px;
+  font-weight: bold;
+}
+
+.ant-modal-close:hover{
+
+  background-color: #eb7a244e !important;
+}
+
+.ant-form-item-explain-error {
+  margin-top: -30px !important;
+}
+
+.ant-radio-group {
+  margin-bottom: -30px !important; /* Remove extra margin if any */
+}
+
+
+

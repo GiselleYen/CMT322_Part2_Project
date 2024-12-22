@@ -1,0 +1,49 @@
+  .faq-actions Button{
+    color: var(--primary-color);
+  }
+
+  .faq-actions Button:hover{
+    color: var(--secondary-color) !important;
+  }
+
+  .modal-delete-btn{
+    background-color: var(--secondary-color)!important;
+    color: #fff !important;
+
+  }
+
+  .faq-header {
+    position: relative; /* Enable absolute positioning for children */
+    display: flex;
+    justify-content: flex-end; /* Align button to the right */
+    align-items: center; /* Align items vertically */
+    padding:30px 90px;
+  }
+
+
+  
+  .faq-header .faq-title {
+    position: absolute;
+    text-align: center; 
+    right: 45%;
+    padding-top: 60px !important;
+  }
+  
+  .A_custom-modal .ant-modal-title {
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    width: 100%;
+    background-color: #efeff8;
+}
+
+.ant-modal-header {
+    text-align: center; /* Centers the title within the header */
+    display: flex; /* Allows content alignment */
+    justify-content: center; /* Ensures content is centered horizontally */
+    align-items: center; /* Ensures content is centered vertically */
+}
+
+  

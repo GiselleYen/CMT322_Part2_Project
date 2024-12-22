@@ -1,0 +1,114 @@
+/* Feedback.css */
+.feedback-page {
+  position: relative; /* Required for the pseudo-element */
+  display: flex;
+  justify-content: space-between; /* Space out the two containers */
+  align-items: flex-start; /* Align items to the top */
+  height: 510px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box; /* Ensure padding does not affect width */
+  overflow: hidden; /* Ensure the pseudo-element doesn't overflow */
+}
+
+.feedback-page::before {
+  content: ''; /* Required to create the pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../../../assets/images/feedback.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 1; /* Set the desired opacity */
+  z-index: -1; /* Place the background behind the content */
+}
+
+.info-container, .feedback-container {
+  position: relative; /* Ensure these remain above the pseudo-element */
+  z-index: 1;
+}
+
+.info-container {
+  width: 40%;  
+  justify-content: center;
+  align-items: center;
+  text-align: center; 
+  margin-top: 100px;
+  margin-left: 150px;
+}
+
+.info-container h1 {
+  margin: 10px 0;
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+}
+
+.info-container h2 {
+  margin: 10px 0;
+  color: white;
+}
+
+.info-container h4{
+  margin-top: 20px;
+  color: white;
+  font-style: italic;
+}
+
+.feedback-container {
+  width: 33%;  
+  padding: 32px;
+  margin-top: 10px;
+  margin-right: 200px;
+  background-color: var(--container-bg-color);
+  border-radius: 15px;
+  height: 450px;  
+  border: 2px ;
+  border-style: solid;
+  border-color:  var(--primary-color);
+}
+
+.feedback-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feedback-page p {
+  text-align: center;
+  font-style: italic;
+}
+
+.feedback-page .submit-btn {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.custom-textarea {
+  background-color: transparent; 
+  color: var(--text-color-primary); 
+  border: 2px;
+  border-style: solid;
+  border-color:  var(--primary-color); 
+  border-radius: 10px; 
+  padding: 10px; 
+}
+
+.custom-textarea::placeholder {
+  color: var(--text-color-secondary); 
+}
+
+
+
+/* Optional: Responsiveness for smaller screens */
+@media (max-width: 768px) {
+.feedback-page {
+  flex-direction: column;  /* Stack the sections vertically */
+  align-items: center;
+}
+
+.info-container, .feedback-container {
+  width: 90%;  /* Increase the width to take up more space on smaller screens */
+  margin-bottom: 20px;  /* Add space between the containers */
+}
+}

@@ -1,0 +1,50 @@
+.faq-container {
+    /* background-image: url("../../../assets/images/faq.png");
+    background-size: cover; */
+    /* padding: 45px 25px; */
+    width: 100%;
+    position: relative; /* For positioning the wave */
+}
+
+.wave-divider {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: -1000;
+}
+
+.wave-divider svg {
+    display: block;
+    width: 100%;
+    height: auto; 
+    /* transform: scaleY(-1); */
+}
+
+.faq-title {
+    color: var(--text-color-light);
+    z-index: 1000;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 40px;
+    margin-bottom: 60px;
+}
+
+.faq-collapse {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 330px;
+}
+
+.ant-collapse-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.ant-collapse-content > .ant-collapse-content-box {
+    font-size: 1rem;
+    color: var(--text-color-primary);
+}
+

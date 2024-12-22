@@ -1,0 +1,71 @@
+/* forgot-password.css */
+
+.forgot-password-page {
+    display: flex;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.408), rgba(4,9,30,0.7)),url("../../../src/assets/images/forgotPassword.png");
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    width: 100%;
+  }
+  
+  .forgot-password-container {
+    position: relative;
+    width: 480px;
+    height:450px;
+    padding: 32px;
+    background-color: rgb(251, 253, 255);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .forgot-password-container form {
+    margin-top: 30px; 
+  }
+
+  .forgot-password-container form Button {
+    margin-top: 30px; 
+    margin-bottom: 20px !important;
+  }
+  
+  .forgot-password-container
+  .input-container
+  .input-label{
+    margin-top: 10px !important;
+    margin-bottom: 5px !important;
+  }
+
+  h2 {
+    margin-bottom: 10px;
+  }
+  
+  p {
+    margin-bottom: 20px;
+  }
+  
+  .reset-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+  }
+  
+  .back-to-login-link {
+    position: absolute;
+    bottom: 0;
+    left: 0;            
+    right: 0;            
+    padding-bottom: 10px !important;
+    text-align: center !important;
+  }
+  
+  .back-to-login-link span {
+    color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .back-to-login-link span:hover {
+    color: var(--secondary-color);
+  }

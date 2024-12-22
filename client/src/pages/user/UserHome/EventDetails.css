@@ -1,0 +1,134 @@
+.event-details-container {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center; 
+  align-items: center;
+  gap: 30px;
+  background-size: cover;
+  background-position: center; 
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.event-schedule-subtitle {
+  width: 100%;
+  text-align: center;
+}
+.event-schedule-subtitle h2 {
+  color: var(--primary-color); /* Orange color for the header text */
+  font-size: 40px; /* Adjust font size to match the example */
+  font-weight: bold;
+  margin: 0;
+}
+
+.event-schedule-subtitle p {
+  font-size: 22px;
+  color: var(--text-color-secondary); /* Light gray color for the subtitle */
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.event-details-text {
+  color: var(--secondary-color) !important;
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card-container .ant-card {
+  border-radius: 10px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.card-container .ant-card:hover {
+  transform: translateY(-2px); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+.card-flip-container {
+  perspective: 1000px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 360px; 
+  margin-left: 50px;
+  margin-bottom: 20px;
+}
+
+.card-flip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-flip:hover {
+  transform: rotateY(180deg);
+}
+
+.front-card {
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.front-card .ant-card-meta {
+  display: flex;
+  justify-content: center; 
+  align-items: center; /* Vertically centers the content */
+  text-align: center; /* Centers text inside */
+  height: 100%;
+}
+
+.event-meta-content .ant-card-meta-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.event-meta-content .ant-card-meta-description {
+  font-size: 16px; /* Adjust description font size */
+}
+
+.back-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  color: var(--primary-color);
+  backface-visibility: hidden;
+  border-radius: 8px;
+  transform: rotateY(180deg);
+  width: 100%;
+}
+
+.back-content {
+  padding: 15px;
+}
+
+.back-content h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.back-content p {
+  margin-top: 10px;
+  color: black;
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center; 
+  align-items: center;
+  text-align: justify;
+}
+
+.ant-row {
+  justify-content: center; /* Ensure the row content is horizontally centered */
+}
+
+.ant-card {
+  margin: 0 auto; /* Ensure cards align within their column */
+}

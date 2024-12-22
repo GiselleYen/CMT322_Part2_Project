@@ -1,0 +1,177 @@
+.event-details-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: center;
+    gap: 30px;
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    width: 99%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .event-details-header {
+    position: relative; /* Enable absolute positioning for children */
+    display: flex;
+    justify-content: flex-end; /* Align button to the right */
+    align-items: center;
+    width: 1350px;
+  }
+
+  .event-details-header .event-details-text {
+    position: absolute;
+    text-align: center; 
+    right: 50%;
+  }
+  
+  .event-details-text {
+    color: var(--primary-color);
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .A_EventScedule-modal .ant-modal-content {
+    background-color: #efeff8; /* Set the background color */
+  }
+  
+  
+  .A_EventScedule-form {
+    background-color: #efeff8; /* Change form background color */
+    padding: 20px; /* Adjust padding */
+    border-radius: 8px; /* Add rounded corners */
+    box-shadow: none; /* Remove the shadow */
+  }
+  
+  .A_EventScedule-modal .ant-modal-header {
+    background-color: #efeff8 !important;
+  }
+
+  .admin-event-schedule-subtitle {
+    width: 100%;
+    text-align: center;
+    margin-right: -100px;
+  }
+  .admin-event-schedule-subtitle h2 {
+    color: var(--primary-color); /* Orange color for the header text */
+    font-size: 40px; /* Adjust font size to match the example */
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .admin-event-schedule-subtitle p {
+    font-size: 22px;
+    color: var(--text-color-secondary); /* Light gray color for the subtitle */
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  .event_manage_details_button{
+    height: 60px;
+    font-size: 16px;
+    margin-left: 0px !important;
+    background-color: var(--secondary-color);
+    color: #fff;
+  }
+
+  .manage_details_button:hover {
+    background-color: var( --primary-color)!important; 
+    color: var(--text-color-light)!important;
+    border-color:var(--primary-color) !important;
+  }
+  
+  .card-flip-container {
+    perspective: 1000px; /* Required for the 3D effect */
+    display: flex;
+    justify-content: center; /* Center the card container */
+    align-items: center;
+    width: 360px; 
+    margin-left: 50px;
+  }
+  
+  .card-flip {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .card-flip:hover {
+    transform: rotateY(180deg);
+  }
+  
+  .front-card {
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%; /* Make card take full width of container */
+  }
+  
+  .back-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    color: var(--primary-color);
+    backface-visibility: hidden;
+    padding: 20px;
+    border-radius: 8px;
+    transform: rotateY(180deg);
+    width: 100%; /* Make back card match front card */
+  }
+  
+  .back-content h3 {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  .back-content p {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: center;
+  }
+  
+  .ant-row {
+    justify-content: center; /* Ensure the row content is horizontally centered */
+  }
+  
+  .ant-card {
+    margin: 0 auto; /* Ensure cards align within their column */
+  }
+
+  .card-container .ant-card {
+    border-radius: 10px; /* Keep rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Initial shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover animation */
+  }
+
+  .card-container .ant-card:hover {
+    transform: translateY(-2px); /* Makes the card lift slightly */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+  }
+
+  .front-card .ant-card-meta {
+    display: flex;
+    justify-content: center; /* Horizontally centers the content */
+    align-items: center; /* Vertically centers the content */
+    text-align: center; /* Centers text inside */
+    height: 100%; /* Ensures the container takes up the full height */
+  }
+  
+  .event-meta-content .ant-card-meta-title {
+    font-size: 20px; /* Increase title font size */
+    font-weight: bold; /* Optional: Make the title bold */
+  }
+  
+  .event-meta-content .ant-card-meta-description {
+    font-size: 16px; /* Adjust description font size */
+  }
+  
+  

@@ -1,0 +1,105 @@
+.best-intern-container {
+width: 100%;
+}
+
+.bestintern_subtitle {
+  width: 100%;
+  text-align: center;
+  margin-top: 70px; 
+  margin-bottom: 40px; 
+}
+.bestintern_subtitle h2 {
+  color: var(--secondary-color); /* Orange color for the header text */
+  font-size: 36px; /* Adjust font size to match the example */
+  font-weight: bold;
+  margin: 0;
+}
+
+.bestintern_subtitle p {
+  font-size: 18px;
+  color: var(--text-color-secondary); /* Light gray color for the subtitle */
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.carousel-navigation {
+display: flex;
+justify-content: center;
+margin-bottom: 20px;
+}
+
+/* Default Navigation Button Styles */
+.nav-button {
+  margin: 0 10px; /* Add spacing between buttons */
+  background-color: transparent; /* Default background */
+  color: var(--primary-color); /* Match primary theme */
+  border: 2px solid var(--primary-color);
+  font-weight: bold;
+  transition: all 0.8s ease-in-out;
+
+}
+
+.nav-button:hover {
+  background-color: var(--secondary-color); /* Add hover effect */
+  color: white;
+}
+
+.nav-button.active {
+  background-color: var(--primary-color); /* Highlight active button */
+  color: white;
+  border-color: var(--primary-color);
+  transform: scale(1.1); /* Add slight zoom effect */
+}
+
+
+.custom-modal .modal-title {
+  color: var(--primary-color);
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.custom-modal .modal-title h4{
+  color: var(--primary-color);
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
+.custom-modal .custom-bullet-points ul {
+  margin-left: -4px; /* Adjust indentation */
+}
+
+.custom-modal .custom-bullet-points li {
+  margin-bottom: 2px !important; /* Adjust spacing between list items */
+}
+
+/* Add styles for the separator line */
+.custom-modal .separator-line {
+  border-top: 2px solid #c5c9ce;  /* Light gray line */
+  margin-top: 20px;  
+  margin-bottom: -10px;
+}
+
+.custom-modal .modal-contact h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 25px;
+}
+
+.custom-modal .modal-contact pre {
+  margin-top: -4px;
+  font-size: 14px;
+
+}
+
+.custom-modal .modal-contact-info a {
+  color: #348aae; /* Change --your-color to the desired color */
+  text-decoration: none; /* Optional: removes underline if you don't want it */
+}
+
+.custom-modal .modal-contact-info a:hover {
+  color: var(--secondary-color); /* Optional: color change on hover */
+}

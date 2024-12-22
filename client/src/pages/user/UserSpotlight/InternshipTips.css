@@ -1,0 +1,108 @@
+.internship-tips-container {
+    width: 100%;
+
+  }
+
+.interntips_subtitle {
+    width: 100%;
+    text-align: center;
+    margin-top: 70px; 
+    margin-bottom: 40px; .internship-tips-container {
+    width: 100%;
+
+  }
+
+.interntips_subtitle {
+    width: 100%;
+    text-align: center;
+    margin-top: 70px; 
+    margin-bottom: 40px; 
+}
+.interntips_subtitle h2 {
+    color: var(--secondary-color); /* Orange color for the header text */
+    font-size: 36px; /* Adjust font size to match the example */
+    font-weight: bold;
+    margin: 0;
+}
+
+.interntips_subtitle p {
+    font-size: 18px;
+    color: var(--text-color-secondary); /* Light gray color for the subtitle */
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.shortcards-container {
+    display: flex;
+    justify-content: right; /* Center the cards horizontally */
+    gap: 2px; /* Add spacing between the cards */
+    margin-top: 40px; /* Add space above the cards */
+    margin-bottom: 40px;
+  }
+
+
+.shortcards-container .ant-card {
+  border-radius: 10px; /* Keep rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Initial shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover animation */
+}
+
+.shortcards-container .ant-card:hover {
+  transform: translateY(-2px); /* Makes the card lift slightly */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.modal-description ul {
+  margin-left: 20px; /* Adjust indentation */
+  padding-left: 0;
+}
+
+.modal-description li {
+  margin-bottom: 10px; /* Space between items */
+}
+
+
+}
+.interntips_subtitle h2 {
+    color: var(--secondary-color); /* Orange color for the header text */
+    font-size: 36px; /* Adjust font size to match the example */
+    font-weight: bold;
+    margin: 0;
+}
+
+.interntips_subtitle p {
+    font-size: 18px;
+    color: var(--text-color-secondary); /* Light gray color for the subtitle */
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.shortcards-container {
+    display: flex;
+    justify-content: right; /* Center the cards horizontally */
+    gap: 2px; /* Add spacing between the cards */
+    margin-top: 40px; /* Add space above the cards */
+    margin-bottom: 40px;
+  }
+
+
+.shortcards-container .ant-card {
+  border-radius: 10px; /* Keep rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Initial shadow */
+  transition: box-shadow 0.3s ease; /* Smooth hover animation */
+}
+
+.shortcards-container .ant-card:hover {
+  transform: none !important; /* Makes the card lift slightly */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.modal-description ul {
+  margin-left: 20px; /* Adjust indentation */
+  padding-left: 0;
+}
+
+.modal-description li {
+  margin-bottom: 10px; /* Space between items */
+}
+

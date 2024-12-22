@@ -1,0 +1,149 @@
+.company-page{
+    background-color: var(--background-color-secondary);
+    padding: 20px;
+    }
+.page-title{
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--text-color-primary);
+}
+    
+    /* Modal overlay to darken the background */
+.modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      
+      /* Modal container */
+.modal-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 1000px;
+        height: 90%;
+        position: relative;
+        overflow-y: auto;
+        max-height: 85vh; 
+      }
+.modal-container p{
+        font-family: var(--secondary-font);
+        color: var(--text-color-secondary);
+    }
+.modal-container h2{
+        color: var(--text-color-primary);
+    }
+    
+      /* Close button in top right corner */
+.close-button {
+        background-color: red;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 50%;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+      
+.close-button:hover {
+        background-color: darkred;
+      }
+      
+
+      
+.company-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    
+      }
+      
+.company-cards {
+        display: flex;
+        gap: 65px;
+        flex-wrap: wrap;
+        justify-content: center;
+        
+      }
+.company-card {
+        background-color: white;
+        padding: 20px;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        width:  350px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+     
+.company-card:hover {
+        transform: scale(1.05);  /* Slightly enlarge the card */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);  /* Increase shadow effect */
+        background-color: #f9f9f9;  /* Change background color on hover */
+      }
+.company-logo {
+        width: 200px;
+        height: 200px;
+        object-fit: scale-down;
+        border-radius: 50%;
+        margin-bottom: 15px;
+      }
+      
+.company-card h3 {
+        margin: 10px 0;
+        color: var(--text-color-primary);
+        
+      }
+.company-card .company-name{
+        font-size: 26px;
+        color: var(--primary-color-light);
+      }
+      /* Make the cards responsive */
+@media (max-width: 900px) {
+        .company-card {
+          width: calc(50% - 20px); /* 2 cards per row for medium screens */
+        }
+      }
+      
+@media (max-width: 700px) {
+        .company-card {
+          width: calc(100% - 20px); /* 1 card per row for small screens */
+        }
+      }
+     
+.search-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 60px;    
+      }
+.search-bar {
+        width: 100%;  /* Ensures search bar takes the full width of its container */
+        max-width: 800px; /* Maximum width of the search bar */
+        padding: 15px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin: auto;
+      }
+.button-container {
+        display: flex;          /* Use flexbox layout */
+        gap: 20px;       
+        justify-Content:center;
+      
+      }
+    

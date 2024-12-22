@@ -1,0 +1,114 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--primary-color);
+  position: relative;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.logo img {
+  height: 45px;
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem; /* Space between menu and profile icon */
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  transition: all 0.3s ease;
+}
+
+/* Hide the nav links on small screens */
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-color-light);
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.nav-links a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* Profile Icon */
+.profile-icon {
+  font-size: 35px !important;
+  color: var(--text-color-light);
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* Menu toggle button (hamburger) */
+.menu-toggle {
+  display: none;
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: var(--text-color-light);
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Show menu toggle button only on smaller screens */
+@media (max-width: 768px) {
+  .menu-container {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Make nav-links vertical when mobile and hidden by default */
+  .nav-links {
+    display: none; /* Hide by default */
+    flex-direction: column; /* Stack links vertically */
+    position: absolute;
+    top: 80px;
+    z-index: 1000;
+    right: 0;
+    background-color: var(--primary-color);
+    width: 100%;
+    padding: 1rem;
+  }
+
+  /* Show nav-links when active (hamburger clicked) */
+  .nav-links.active {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block; /* Show hamburger button */
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: var(--dropdown-menu-color);
+  border: 1px var(--dropdown-menu-color);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  margin-right: 10px !important;
+  z-index: 1000;
+}
+
+.profile-icon-link:hover .dropdown-menu {
+  display: block;
+}
+
+.logout-btn {
+  padding: 8px 12px;
+}
