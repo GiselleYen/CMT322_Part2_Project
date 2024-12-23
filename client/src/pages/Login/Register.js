@@ -95,6 +95,10 @@ const RegisterPage = () => {
           email: formData.email
         })
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to register user in backend');
+      }
 
       message.success('Registration successful!');
       setTimeout(() => {
