@@ -9,14 +9,21 @@ const serviceAccount = {
   client_email: process.env.FIREBASE_CLIENT_EMAIL,
 };
 
-// Initialize Firebase Admin only if it hasn't been initialized
-if (!admin.apps.length) {
+// Handle private key formatting
+if (serviceAccount.private_key.includes('\\n')) {
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+}
+
+// Initialize Firebase Admin
+try {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
+  console.log('Firebase Admin initialized successfully');
+} catch (error) {
+  console.error('Firebase Admin initialization error:', error);
 }
 
-// Export the initialized Firestore instance
 const db = admin.firestore();
 
 module.exports = { admin, db };
