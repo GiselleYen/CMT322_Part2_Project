@@ -1,55 +1,122 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Register.css';
-import Button from '../../components/button/button';
-import { Select, message} from 'antd';
+import { Select, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, IdcardOutlined, CalendarOutlined } from '@ant-design/icons';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../config/firebase'; // Make sure you have this config file
+import Button from '../../components/button/button';
 import RegisterInputField from '../../components/inputfield/registerinputfield';
+import './Register.css';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [matricNumber, setMatricNumber] = useState('');
-  const [yearOfStudy, setYearOfStudy] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     matricNumber: '',
     yearOfStudy: '',
+    email: '',
     password: '',
     confirmPassword: '',
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Register Successfully");
-
-    if (!name || !matricNumber  || !email || !password || !confirmPassword) {
+  const validateForm = () => {
+    const { name, matricNumber, yearOfStudy, email, password, confirmPassword } = formData;
+    
+    if (!name || !matricNumber || !yearOfStudy || !email || !password || !confirmPassword) {
       message.error('Please fill in all fields');
-      return;
+      return false;
     }
 
-    // if (password !== confirmPassword) {
-    //   message.error('Passwords do not match');
-    //   return;
-    // }
+    if (!email.endsWith('@student.usm.my')) {
+      message.error('Please use a valid @student.usm.my email');
+      return false;
+    }
 
-    message.success('Registration successful!');
-    setTimeout(() => {
-      navigate('/'); 
-    }, 2000);
+    if (password.length < 6) {
+      message.error('Password must be at least 6 characters long');
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      message.error('Passwords do not match');
+      return false;
+    }
+
+    return true;
   };
 
-  const handleLoginRedirect = () => {
-    navigate('/');
+  const handleChange = (name, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setLoading(true);
+    
+    try {
+      const auth = getAuth();
+      
+      // Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(
+        auth, 
+        formData.email, 
+        formData.password
+      );
+      
+      // Store additional user data in Firestore
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        name: formData.name,
+        matricNumber: formData.matricNumber,
+        yearOfStudy: formData.yearOfStudy,
+        email: formData.email,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+
+      // Call your backend API to store user data
+      const response = await fetch('http://localhost:5000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${await userCredential.user.getIdToken()}`
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          matricNumber: formData.matricNumber,
+          yearOfStudy: formData.yearOfStudy,
+          email: formData.email
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to register user in backend');
+      }
+
+      message.success('Registration successful!');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Registration error:', error);
+      let errorMessage = 'Registration failed. Please try again.';
+      
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'This email is already registered.';
+      }
+      
+      message.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,93 +125,96 @@ const RegisterPage = () => {
         <h1>Registration Form</h1>
         <h2>Create your account for VCSIRF</h2>
         <p>- Join us and dive into a world of career opportunities!</p>
-        <p>Dont's miss out on valuable insights, inspiration, and chances to shape your career! -</p>
+        <p>Don't miss out on valuable insights, inspiration, and chances to shape your career! -</p>
       </div>
 
       <div className="register-container">
-
         <form onSubmit={handleSubmit} className="register-form">
           <RegisterInputField
             label="Name"
             type="text"
-            name="participant_name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="name"
+            value={formData.name}
+            onChange={(e) => handleChange('name', e.target.value)}
             placeholder="Enter your full name"
             required
             prefixIcon={<UserOutlined />}
           />
+          
           <RegisterInputField
             label="Matric Number"
             type="text"
             name="matricNumber"
-            value={matricNumber}
-            onChange={(e) => setMatricNumber(e.target.value)}
+            value={formData.matricNumber}
+            onChange={(e) => handleChange('matricNumber', e.target.value)}
             placeholder="Enter your matric number"
             required
             prefixIcon={<IdcardOutlined />}
           />
+          
           <div className="register-input-label">Year of Study</div>
           <Select
             className="study-year"
+            value={formData.yearOfStudy}
+            onChange={(value) => handleChange('yearOfStudy', value)}
             showSearch
             placeholder="Select your Year of Study"
             optionFilterProp="label"
-            prefix={<CalendarOutlined style={{ fontSize: '16px', marginRight: '2px', marginTop: '22px' }} />} 
+            prefix={<CalendarOutlined />}
             options={[
-            {
-                value: 'Year 1',
-                label: 'Year 1',
-            },
-            {
-                value: 'Year 2',
-                label: 'Year 2',
-            },
-            {
-                value: 'Year 3',
-                label: 'Year 3',
-            },
-            {
-                value: 'Year 4',
-                label: 'Year 4',
-            },
+              { value: 'Year 1', label: 'Year 1' },
+              { value: 'Year 2', label: 'Year 2' },
+              { value: 'Year 3', label: 'Year 3' },
+              { value: 'Year 4', label: 'Year 4' },
             ]}
-        />
+          />
+          
           <RegisterInputField
             label="Email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={formData.email}
+            onChange={(e) => handleChange('email', e.target.value)}
             placeholder="@student.usm.my"
             required
             prefixIcon={<MailOutlined />}
           />
+          
           <RegisterInputField
             label="Password"
             type="password"
             name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={(e) => handleChange('password', e.target.value)}
             placeholder="Enter your password"
             required
             prefixIcon={<LockOutlined />}
           />
+          
           <RegisterInputField
             label="Confirm Password"
             type="password"
             name="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={formData.confirmPassword}
+            onChange={(e) => handleChange('confirmPassword', e.target.value)}
             placeholder="Confirm your password"
             required
             prefixIcon={<LockOutlined />}
           />
-          <Button text="Register" onClick={handleSubmit} styleClass="register-btn"/>
+          
+          <Button 
+            text={loading ? "Registering..." : "Register"} 
+            onClick={handleSubmit} 
+            styleClass="register-btn"
+            disabled={loading}
+          />
         </form>
 
         <p className="login-link">
           Already have an account?{' '}
-          <span onClick={handleLoginRedirect} className="login-text">Login here</span>
+          <span onClick={() => navigate('/')} className="login-text">
+            Login here
+          </span>
         </p>
       </div>
     </div>
