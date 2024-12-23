@@ -4,7 +4,7 @@ import { Select, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, IdcardOutlined, CalendarOutlined } from '@ant-design/icons';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../config/firebase'; // Make sure you have this config file
+import { db } from '../../config/firebase'; 
 import Button from '../../components/button/button';
 import RegisterInputField from '../../components/inputfield/registerinputfield';
 import './Register.css';
@@ -82,7 +82,7 @@ const RegisterPage = () => {
       });
 
       // Call your backend API to store user data
-      const response = await fetch('http://localhost:5000/api/users', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -95,10 +95,6 @@ const RegisterPage = () => {
           email: formData.email
         })
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to register user in backend');
-      }
 
       message.success('Registration successful!');
       setTimeout(() => {
