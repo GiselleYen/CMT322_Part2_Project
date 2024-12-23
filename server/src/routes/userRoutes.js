@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post('/', authenticateUser, async (req, res) => {
   try {
+    console.log("Request body:", req.body);
     const { name, matricNumber, yearOfStudy, email } = req.body;
     const userId = req.user.uid;
 

@@ -71,15 +71,15 @@ const RegisterPage = () => {
         formData.password
       );
       
-      // Store additional user data in Firestore
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
-        name: formData.name,
-        matricNumber: formData.matricNumber,
-        yearOfStudy: formData.yearOfStudy,
-        email: formData.email,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      });
+      // // Store additional user data in Firestore
+      // await setDoc(doc(db, 'users', userCredential.user.uid), {
+      //   name: formData.name,
+      //   matricNumber: formData.matricNumber,
+      //   yearOfStudy: formData.yearOfStudy,
+      //   email: formData.email,
+      //   createdAt: new Date().toISOString(),
+      //   updatedAt: new Date().toISOString()
+      // });
 
       // Call your backend API to store user data
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
