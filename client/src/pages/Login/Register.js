@@ -82,7 +82,7 @@ const RegisterPage = () => {
       });
 
       // Call your backend API to store user data
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

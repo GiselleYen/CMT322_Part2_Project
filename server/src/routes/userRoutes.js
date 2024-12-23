@@ -3,17 +3,15 @@ const { db } = require('../config/firebase');
 const { authenticateUser } = require('../middleware/auth');
 const router = express.Router();
 
-router.post('/users', authenticateUser, async (req, res) => {
+router.post('/', authenticateUser, async (req, res) => {
   try {
     const { name, matricNumber, yearOfStudy, email } = req.body;
     const userId = req.user.uid;
 
-    // Validate required fields
     if (!name || !matricNumber || !yearOfStudy || !email) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // Validate email domain
     if (!email.endsWith('@student.usm.my')) {
       return res.status(400).json({ error: 'Invalid email domain' });
     }
