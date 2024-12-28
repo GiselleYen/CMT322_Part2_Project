@@ -1,47 +1,94 @@
-import React, { useState } from 'react';
-import { Button, Modal, Form, Input, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Form, Input, message, Spin } from 'antd';
 import { PlusOutlined } from "@ant-design/icons";
-import './A_VenueDateTime.css'; 
+import { getAuth } from "firebase/auth";
+import { venueDateTimeService } from '../../../services/Dashboard/venueDateTimeService';
+import './A_VenueDateTime.css';
 
 const A_VenueDateTime = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false); // For fetching data
+  const [saving, setSaving] = useState(false); // For saving data
   const [form] = Form.useForm();
+  const { currentUser } = getAuth();
   const [eventDetails, setEventDetails] = useState({
-    date: '4th January 2025',
-    time: '8:45 AM - 4:30 PM (GMT+8)',
-    venue: 'Online',
-    webexLink: 'https://meet1423.webex.com/wbxmjs/joinservice/sites/meet1423/meeting/download/c44e3b9554904d57936b51678ea3c6f8?siteurl=meet1423&MTID=m905c71cb000dec77dc3a62d640e1d1ea',
+    date: '',
+    time: '',
+    venue: '',
+    webexLink: '',
   });
 
-  // Handle modal visibility
+  const loadVenueDateTime = async () => {
+    setLoading(true);
+    try {
+      const data = await venueDateTimeService.getVenueDateTime();
+      setEventDetails(data);
+    } catch (error) {
+      message.error('Failed to load venue and time details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadVenueDateTime();
+  }, []);
+
   const showModal = () => {
+    if (!currentUser) {
+      message.error('Please login to manage venue details');
+      return;
+    }
     setIsModalVisible(true);
     form.setFieldsValue(eventDetails);
   };
 
-  const handleOk = () => {
-    form.validateFields().then((values) => {
+  const handleOk = async () => {
+    try {
+      const values = await form.validateFields();
+      const idToken = await currentUser.getIdToken();
+
+      setSaving(true);
+      await venueDateTimeService.updateVenueDateTime(values, idToken);
       setEventDetails(values);
-      setIsModalVisible(false); 
-    });
-    message.success('Date, Time and Venue updated');
+      message.success('Date, Time, and Venue updated successfully');
+      setIsModalVisible(false);
+      loadVenueDateTime(); // Refresh data
+    } catch (error) {
+      message.error('Failed to update venue details');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
     <div>
-      {/* Venue and DateTime Section */}
       <div className="venue-banner" style={{ backgroundImage: 'url(/assets/images/DT_bg.png)'}}>
         <div className="venue-banner-content">
-
           <div className="event-header">
             <h2 className="event-title">VCSIRF Date and Venue</h2>
-            <Button type="primary" className="manage-event-button" icon={<PlusOutlined />} onClick={showModal}>
+            {currentUser && (
+              <Button 
+                type="primary" 
+                className="manage-event-button" 
+                icon={<PlusOutlined />} 
+                onClick={showModal}
+              >
                 Manage Venue and DateTime
-            </Button>
+              </Button>
+            )}
           </div>
           <div className="event-info">
             <div className="event-date">
@@ -64,15 +111,15 @@ const A_VenueDateTime = () => {
 
       <Modal
         className="A_VenueDateTime-modal"
-        title={<div className="modal-title" >Manage Event</div>}
+        title={<div className="modal-title">Manage Event</div>}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         okText="Save"
         cancelText="Cancel"
         width={600}
-        okButtonProps={{ className: 'save_button' }}
-        cancelButtonProps={{ className: 'cancel_button' }}
+        okButtonProps={{ className: 'save_button', loading: saving, disabled: saving }}
+        cancelButtonProps={{ className: 'cancel_button', disabled: saving }}
       >
         <Form form={form} layout="vertical" className="A_VenueDateTime-form">
           <Form.Item

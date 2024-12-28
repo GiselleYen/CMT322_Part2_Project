@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const userRoutes = require('./userRoutes');
-const announcementRoutes = require('./announcementRoutes'); // Add this
+const announcementRoutes = require('./announcementRoutes'); 
+const venueDateTimeRoutes = require('./venueDateTimeRoutes'); 
 const { authenticateUser } = require('../middleware/auth');
 
 
@@ -14,6 +15,7 @@ router.get('/protected', authenticateUser, (req, res) => {
 });
 
 router.use('/users', userRoutes);
-router.use('/announcements', announcementRoutes); // Add this
+router.use('/announcements', announcementRoutes); 
+router.use('/venue-datetime', venueDateTimeRoutes); 
 
 module.exports = router;

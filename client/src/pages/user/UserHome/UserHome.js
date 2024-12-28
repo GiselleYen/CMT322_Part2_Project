@@ -1,39 +1,72 @@
-import React from 'react';
-import { Carousel } from 'antd';
+import React, { useState, useEffect } from "react";
+import { Carousel, message } from 'antd';
 import './UserHome.css';
 import EventDetails from './EventDetails'; 
 import VenueAndDateTime from './VenueAndDateTime';
+import { getAuth } from "firebase/auth";
+import { announcementService } from "../../../services/Dashboard/announcementService";
 import FAQ from './FAQ'
 
 const UserHomePage = () => {
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [announcements, setAnnouncements] = useState([
+    { title: "", description: "", bgImage: "/assets/images/Announcement_A.png", color: "var(--primary-color)" },
+    { title: "", description: "", bgImage: "/assets/images/Announcement_B.png", color: "var(--secondary-color)" },
+    { title: "", description: "", bgImage: "/assets/images/Announcement_C.png", color: "var(--primary-color)" },
+  ]);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      setLoading(true);
+      try {
+        const data = await announcementService.getAnnouncements();
+        setAnnouncements((prev) =>
+          prev.map((announcement, index) => ({
+            ...announcement,
+            title: data[index]?.title || announcement.title,
+            description: data[index]?.description || announcement.description,
+            id: data[index]?.id || null, // Preserve ID for updating
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching announcements:", error);
+        message.error("Failed to load announcements.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
+
   return (
     <div>
       <div className="user-home_container">
         <div className="user-home_announcement">
           Latest Announcement
         </div>
-        <Carousel autoplay dotPosition="right" infinite={true} style={{ height: '400px' }}>
-          <div>
-            <div className="carousel-slide bg-image" style={{ backgroundImage: 'url(/assets/images/Announcement_A.png)', color: "var(--primary-color)" }}>
-              <h3>Announcement for Internship Application Deadlines</h3>
-              <p>Reminder: The deadline to apply for the summer internship program is fast approaching! Make sure to submit your applications by May 15th, 2024. Don't miss this opportunity to gain hands-on experience in your field of interest.</p>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-slide bg-image" style={{ backgroundImage: 'url(/assets/images/Announcement_B.png)', color: "var(--secondary-color)" }}>
-              <h3>Unlocking Interview Success:<br/>
-              Insights from Industry Experts</h3>
-              <p>Get industry insights in our expert panel session.</p>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-slide bg-image" style={{ backgroundImage: 'url(/assets/images/Announcement_C.png)', color: "var(--primary-color)" }}>
-              <h3>Sharing Session:<br/>
-              How to Optimize Your LinkedIn Profile</h3>
-              <p>Uncover the secrets of LinkedIn optimization</p>
-            </div>
-          </div>
-        </Carousel>      
+        <Carousel 
+                  autoplay 
+                  dotPosition="right" 
+                  infinite={true} 
+                  style={{ height: "400px", marginBottom: "20px" }}
+                >
+                  {announcements.map((announcement, index) => (
+                    <div key={index}>
+                      <div
+                        className="carousel-slide bg-image"
+                        style={{ 
+                          backgroundImage: `url(${announcement.bgImage})`, 
+                          color: announcement.color 
+                        }}
+                      >
+                        <h3>{announcement.title}</h3>
+                        <p>{announcement.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </Carousel>     
       </div>
 
       <VenueAndDateTime />

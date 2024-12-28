@@ -1,13 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import {message } from 'antd';
+import { venueDateTimeService } from '../../../services/Dashboard/venueDateTimeService';
 import './VenueAndDateTime.css'; 
 
 const VenueAndDateTime = () => {
-  const eventDetails = {
-    date: '4th December 2023',
-    time: '8:45 AM - 4:30 PM (GMT+8)',
-    venue: 'Online',
-    webexLink: 'https://meet1423.webex.com/wbxmjs/joinservice/sites/meet1423/meeting/download/c44e3b9554904d57936b51678ea3c6f8?siteurl=meet1423&MTID=m905c71cb000dec77dc3a62d640e1d1ea', // Replace this with your actual Webex link
-  };
+   const [loading, setLoading] = useState(false);
+  const [eventDetails, setEventDetails] = useState({
+      date: '',
+      time: '',
+      venue: '',
+      webexLink: '',
+    });
+
+    const loadVenueDateTime = async () => {
+      setLoading(true);
+      try {
+        const data = await venueDateTimeService.getVenueDateTime();
+        setEventDetails(data);
+      } catch (error) {
+        message.error('Failed to load venue and time details');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    useEffect(() => {
+        loadVenueDateTime();
+    }, []);
 
   return (
     <div className="venue-banner" style={{ backgroundImage: 'url(/assets/images/DT_bg.png)'}}>
