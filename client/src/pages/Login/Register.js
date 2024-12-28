@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Select, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, IdcardOutlined, CalendarOutlined } from '@ant-design/icons';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../config/firebase'; 
+import { getAuth } from 'firebase/auth';
 import Button from '../../components/button/button';
 import RegisterInputField from '../../components/inputfield/registerinputfield';
 import './Register.css';
@@ -62,7 +60,6 @@ const RegisterPage = () => {
     setLoading(true);
     
     try {
-      const auth = getAuth();
 
       // Call your backend API to store user data
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {

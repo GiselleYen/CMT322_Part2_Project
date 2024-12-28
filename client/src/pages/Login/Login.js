@@ -5,39 +5,40 @@ import Button from '../../components/button/button';
 import { message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import InputField from '../../components/inputfield/inputfield';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Import Firebase auth methods
+import { auth } from '../../config/firebase'; // Import your Firebase auth configuration
 
-const LoginPage = ({ setIsLoggedIn, setRole }) => { // Props are received here
+const LoginPage = ({ setIsLoggedIn, setRole }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Log In Successfully");
+    // Firebase Authentication for login
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-    // Check the email
-    if (email === 'cssociety@student.usm.my') {
-      setRole('admin'); // Update the role
-      setIsLoggedIn(true); // Set logged-in status
-      navigate('/admin');  // navigate to admin dashboard
-    } else if (email.endsWith('@student.usm.my')) {
-      setRole('student'); // Update the role
-      setIsLoggedIn(true); // Set logged-in status
-      navigate('/userhome');  // navigate to student home page
-    } else {
-      message.error('Invalid email address. Please enter your student email!');
+      console.log('Logged in successfully:', user);
+
+      // Check the user role based on email
+      if (email === 'cssociety@student.usm.my') {
+        setRole('admin');
+        setIsLoggedIn(true);
+        navigate('/admin'); // Admin dashboard
+      } else if (email.endsWith('@student.usm.my')) {
+        setRole('student');
+        setIsLoggedIn(true);
+        navigate('/userhome'); // Student home page
+      } else {
+        message.error('Invalid email address. Please enter your student email!');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      message.error('Invalid email or password. Please try again.');
     }
-
-  //   if (email === 'cssociety@student.usm.my') {
-  //     setRole('admin'); // Update the role
-  //     setIsLoggedIn(true); // Set logged-in status
-  //     navigate('/admin');  // navigate to admin dashboard
-  //   } else {
-  //     setRole('student'); // Update the role
-  //     setIsLoggedIn(true); // Set logged-in status
-  //     navigate('/userhome');  // navigate to student home page
-  //   }
   };
 
   const handleForgotPswdRedirect = () => {
@@ -50,13 +51,12 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => { // Props are received here
 
   return (
     <div className="login-page">
-
       <div className='event-info-container'>
-            <h1>Virtual Computer Science Internship and Recruitment Fair (VCSIRF)</h1>
-            <h2>  — Find your internship opportunities in here!</h2>
-            <h4>Date: 4th January 2025</h4>
-            <h4>Time: 8:45 AM - 4:30 PM (GMT+8)</h4>
-            <h4>Venue: Online</h4>
+        <h1>Virtual Computer Science Internship and Recruitment Fair (VCSIRF)</h1>
+        <h2>— Find your internship opportunities in here!</h2>
+        <h4>Date: 4th January 2025</h4>
+        <h4>Time: 8:45 AM - 4:30 PM (GMT+8)</h4>
+        <h4>Venue: Online</h4>
       </div>
 
       <div className="login-container">
@@ -86,7 +86,7 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => { // Props are received here
           <p className="forgot-pswd" onClick={handleForgotPswdRedirect}>
             Forgot Password?
           </p>
-          <Button text="Login" onClick={handleSubmit} styleClass="login-btn" />
+          <Button text="Login" type="submit" styleClass="login-btn" />
         </form>
 
         <p className="register-link">

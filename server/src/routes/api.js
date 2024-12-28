@@ -3,6 +3,7 @@ const router = express.Router();
 const userRoutes = require('./userRoutes');
 const announcementRoutes = require('./announcementRoutes'); 
 const venueDateTimeRoutes = require('./venueDateTimeRoutes'); 
+const eventRoutes = require('./eventRoutes'); 
 const { authenticateUser } = require('../middleware/auth');
 
 
@@ -17,5 +18,6 @@ router.get('/protected', authenticateUser, (req, res) => {
 router.use('/users', userRoutes);
 router.use('/announcements', announcementRoutes); 
 router.use('/venue-datetime', venueDateTimeRoutes); 
+router.use('/events', eventRoutes);
 
 module.exports = router;

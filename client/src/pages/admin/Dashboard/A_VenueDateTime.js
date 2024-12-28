@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form, Input, message, Spin } from 'antd';
 import { PlusOutlined } from "@ant-design/icons";
-import { getAuth } from "firebase/auth";
+import { auth } from '../../../config/firebase';
 import { venueDateTimeService } from '../../../services/Dashboard/venueDateTimeService';
 import './A_VenueDateTime.css';
 
@@ -10,7 +10,7 @@ const A_VenueDateTime = () => {
   const [loading, setLoading] = useState(false); // For fetching data
   const [saving, setSaving] = useState(false); // For saving data
   const [form] = Form.useForm();
-  const { currentUser } = getAuth();
+  const { currentUser } = auth;
   const [eventDetails, setEventDetails] = useState({
     date: '',
     time: '',

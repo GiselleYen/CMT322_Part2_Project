@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Carousel, Modal, Button, Input, message, Spin } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PropTypes from 'prop-types';
-import { getAuth } from "firebase/auth";
+import { auth } from '../../../config/firebase';
+//import { getAuth } from "firebase/auth";
 import { announcementService } from "../../../services/Dashboard/announcementService";
 import "./A_Announcement.css";
 
@@ -50,8 +51,8 @@ const A_Announcement = () => {
   };
 
   const handleSaveChanges = async () => {
-    const auth = getAuth();
     const user = auth.currentUser;
+    console.log("Current User:", user);
 
     if (!user) {
       message.error("User not authenticated");
