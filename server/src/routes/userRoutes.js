@@ -1,45 +1,118 @@
 const express = require('express');
-const { db } = require('../config/firebase');
-const { authenticateUser } = require('../middleware/auth');
+const { admin, db } = require('../config/firebase'); // Firebase Admin SDK
 const router = express.Router();
 
-router.post('/', authenticateUser, async (req, res) => {
+// Register a new user
+router.post('/', async (req, res) => {
   try {
-    const { name, matricNumber, yearOfStudy, email } = req.body;
-    const userId = req.user.uid;
+    const { name, matricNumber, yearOfStudy, email, password } = req.body;
 
-    if (!name || !matricNumber || !yearOfStudy || !email) {
-      return res.status(400).json({ error: 'All fields are required' });
+    // Validate required fields
+    if (!name || !matricNumber || !yearOfStudy || !email || !password) {
+      return res.status(400).json({
+        status: 'error',
+        error: 'All fields are required'
+      });
     }
 
+    // Validate email domain
     if (!email.endsWith('@student.usm.my')) {
-      return res.status(400).json({ error: 'Invalid email domain' });
+      return res.status(400).json({
+        status: 'error',
+        error: 'Invalid email domain. Use @student.usm.my'
+      });
     }
 
     // Check if matric number is already registered
-    const existingUserQuery = await db
+    const matricSnapshot = await db
       .collection('users')
       .where('matricNumber', '==', matricNumber)
       .get();
 
-    if (!existingUserQuery.empty) {
-      return res.status(400).json({ error: 'Matric number already registered' });
+    if (!matricSnapshot.empty) {
+      return res.status(409).json({
+        status: 'error',
+        error: 'Matric number already registered'
+      });
     }
 
-    // Create user document in Firestore
-    await db.collection('users').doc(userId).set({
+    // Check if email is already registered in Firebase Auth
+    try {
+      const userByEmail = await admin.auth().getUserByEmail(email);
+      if (userByEmail) {
+        return res.status(409).json({
+          status: 'error',
+          error: 'Email already registered'
+        });
+      }
+    } catch (error) {
+      // If error.code === 'auth/user-not-found' then the email is not registered, which is what we want
+      if (error.code !== 'auth/user-not-found') {
+        throw error;
+      }
+    }
+
+    // Create user in Firebase Authentication
+    const userRecord = await admin.auth().createUser({
+      email,
+      password,
+      displayName: name,
+    });
+
+    // Add user data to Firestore
+    await db.collection('users').doc(userRecord.uid).set({
       name,
       matricNumber,
       yearOfStudy,
       email,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     });
 
-    res.status(201).json({ message: 'User registered successfully' });
+    // Respond with success
+    res.status(201).json({
+      status: 'success',
+      message: 'User registered successfully',
+      data: {
+        uid: userRecord.uid,
+        name,
+        email,
+        matricNumber,
+        yearOfStudy,
+      },
+    });
+
   } catch (error) {
     console.error('Error registering user:', error);
-    res.status(500).json({ error: 'Failed to register user' });
+
+    // Handle specific Firebase Auth errors
+    if (error.code === 'auth/email-already-exists') {
+      return res.status(409).json({
+        status: 'error',
+        error: 'Email is already in use'
+      });
+    }
+
+    if (error.code === 'auth/invalid-password') {
+      return res.status(409).json({
+        status: 'error',
+        error: 'Password must be at least 6 characters long'
+      });
+    }
+
+    // Handle other Firebase errors
+    if (error.code && error.code.startsWith('auth/')) {
+      return res.status(400).json({
+        status: 'error',
+        error: error.message || 'Authentication error occurred'
+      });
+    }
+
+    // General error fallback
+    res.status(500).json({
+      status: 'error',
+      error: 'Failed to register user. Please try again later.'
+    });
   }
 });
 

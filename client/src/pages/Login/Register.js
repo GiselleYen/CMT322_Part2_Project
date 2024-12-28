@@ -63,41 +63,27 @@ const RegisterPage = () => {
     
     try {
       const auth = getAuth();
-      
-      // Create user in Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(
-        auth, 
-        formData.email, 
-        formData.password
-      );
-      
-      // // Store additional user data in Firestore
-      // await setDoc(doc(db, 'users', userCredential.user.uid), {
-      //   name: formData.name,
-      //   matricNumber: formData.matricNumber,
-      //   yearOfStudy: formData.yearOfStudy,
-      //   email: formData.email,
-      //   createdAt: new Date().toISOString(),
-      //   updatedAt: new Date().toISOString()
-      // });
 
       // Call your backend API to store user data
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${await userCredential.user.getIdToken()}`
         },
         body: JSON.stringify({
           name: formData.name,
           matricNumber: formData.matricNumber,
           yearOfStudy: formData.yearOfStudy,
-          email: formData.email
+          email: formData.email,
+          password: formData.password
         })
       });
       
+      // Parse the response to get the error message if any
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error('Failed to register user in backend');
+        throw new Error(data.error || 'Failed to register user');
       }
 
       message.success('Registration successful!');
@@ -107,13 +93,19 @@ const RegisterPage = () => {
       
     } catch (error) {
       console.error('Registration error:', error);
-      let errorMessage = 'Registration failed. Please try again.';
       
-      if (error.code === 'auth/email-already-in-use') {
-        errorMessage = 'This email is already registered.';
+      // Handle the specific matric number error
+      if (error.message === 'Matric number already registered') {
+        message.error('This matric number is already registered. Please use a different one.');
       }
-      
-      message.error(errorMessage);
+      // Handle email already in use error
+      else if (error.code === 'auth/email-already-in-use') {
+        message.error('This email is already registered.');
+      }
+      // Handle other errors
+      else {
+        message.error(error.message || 'Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
