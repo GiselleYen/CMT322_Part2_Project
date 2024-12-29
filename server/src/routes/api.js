@@ -4,6 +4,8 @@ const userRoutes = require('./userRoutes');
 const announcementRoutes = require('./announcementRoutes'); 
 const venueDateTimeRoutes = require('./venueDateTimeRoutes'); 
 const eventRoutes = require('./eventRoutes'); 
+const faqRoutes = require('./faqRoutes');
+
 const { authenticateUser } = require('../middleware/auth');
 
 
@@ -19,5 +21,6 @@ router.use('/users', userRoutes);
 router.use('/announcements', announcementRoutes); 
 router.use('/venue-datetime', venueDateTimeRoutes); 
 router.use('/events', eventRoutes);
+router.use('/faqs', faqRoutes);
 
 module.exports = router;
