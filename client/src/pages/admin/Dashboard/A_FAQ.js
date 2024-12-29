@@ -7,8 +7,6 @@ import ButtonComponent from "../../../components/button/button";
 import { auth } from '../../../config/firebase';
 import { faqService } from "../../../services/Dashboard/faqService";
 
-const { Panel } = Collapse;
-
 const AdminFAQ = () => {
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(false);

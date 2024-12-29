@@ -1,27 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Collapse, Spin, message } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
-import { Collapse } from 'antd';
 import './FAQ.css'; 
-
-const items = [
-    {
-        key: '1',
-        label: 'How do I reset my password?',
-        children: "To reset your password, go to the login page and click on 'Forgot Password'. Follow the instructions sent to your registered email.",
-    },
-    {
-        key: '2',
-        label: 'Where can I find the tips or hints for industrial training?',
-        children: "For tips or hints about industrial training, you can refer to the 'Spotlight' section, where senior interns and professionals share valuable advice and industry insights.",
-    },
-    {
-        key: '3',
-        label: "How can I contact support?",
-        children: "You can contact support by emailing cssociety@student.usm.my or using the 'Feedback' option in the navigation menu.",
-    },
-];
+import { auth } from '../../../config/firebase';
+import { faqService } from "../../../services/Dashboard/faqService";
 
 const FAQ = () => {
+    const [faqs, setFaqs] = useState([]);
+    const [loading, setLoading] = useState(true);  // To manage loading state
+
+    useEffect(() => {
+        // Fetch FAQs from the backend
+        const fetchFaqs = async () => {
+            try {
+                const data = await faqService.getFaqs();  // Assuming this makes a GET request to the backend
+                setFaqs(data);
+            } catch (error) {
+                message.error('Failed to load FAQs');
+                console.error(error);
+            } finally {
+                setLoading(false);  // Set loading to false once the request is complete
+            }
+        };
+
+        fetchFaqs();
+    }, []);  // Empty array ensures this runs once when the component is mounted
+
+    if (loading) {
+        return <Spin size="large" />;  // Show a loading spinner while fetching data
+    }
+
     return (
         <div className="faq-container">
             <div className="wave-divider">
@@ -35,8 +43,13 @@ const FAQ = () => {
                     bordered={false}
                     expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
                     ghost
-                    items={items}
-                />
+                >
+                    {faqs.map(faq => (
+                        <Collapse.Panel header={faq.question} key={faq.id}>
+                            <p>{faq.answer}</p>
+                        </Collapse.Panel>
+                    ))}
+                </Collapse>
             </div>
         </div>
     );
