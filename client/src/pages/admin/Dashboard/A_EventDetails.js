@@ -207,6 +207,13 @@ const A_EventDetails = () => {
           style={{ padding: '20px' }}
         >
           <Form.Item
+            name="img"
+            label="Image URL"
+            rules={[{ required: true, message: 'Please input the image URL!' }]}
+          >
+            <Input placeholder="Enter image URL" />
+          </Form.Item>
+          <Form.Item
             name="title"
             label="Event Title"
             rules={[{ required: true, message: 'Please input the event title!' }]}
@@ -220,14 +227,6 @@ const A_EventDetails = () => {
             rules={[{ required: true, message: 'Please input the event time!' }]}
           >
             <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="img"
-            label="Image URL"
-            rules={[{ required: true, message: 'Please input the image URL!' }]}
-          >
-            <Input placeholder="Enter image URL" />
           </Form.Item>
 
           <Form.Item
