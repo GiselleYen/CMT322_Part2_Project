@@ -1,3 +1,4 @@
+// userhome.js
 import React, { useState, useEffect } from "react";
 import { Carousel, message } from 'antd';
 import './UserHome.css';
@@ -7,9 +8,8 @@ import { getAuth } from "firebase/auth";
 import { announcementService } from "../../../services/Dashboard/announcementService";
 import FAQ from './FAQ'
 
-const UserHomePage = () => {
+const UserHomePage = ({ isLoggedIn }) => {
   const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [announcements, setAnnouncements] = useState([
     { title: "", description: "", bgImage: "/assets/images/Announcement_A.png", color: "var(--primary-color)" },
     { title: "", description: "", bgImage: "/assets/images/Announcement_B.png", color: "var(--secondary-color)" },
@@ -40,6 +40,10 @@ const UserHomePage = () => {
     fetchAnnouncements();
   }, []);
 
+  if (!isLoggedIn) {
+    return <div>Please log in to view the content.</div>;
+  }
+
   return (
     <div>
       <div className="user-home_container">
@@ -47,33 +51,33 @@ const UserHomePage = () => {
           Latest Announcement
         </div>
         <Carousel 
-                  autoplay 
-                  dotPosition="right" 
-                  infinite={true} 
-                  style={{ height: "400px", marginBottom: "20px" }}
-                >
-                  {announcements.map((announcement, index) => (
-                    <div key={index}>
-                      <div
-                        className="carousel-slide bg-image"
-                        style={{ 
-                          backgroundImage: `url(${announcement.bgImage})`, 
-                          color: announcement.color 
-                        }}
-                      >
-                        <h3>{announcement.title}</h3>
-                        <p>{announcement.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </Carousel>     
+          autoplay 
+          dotPosition="right" 
+          infinite={true} 
+          style={{ height: "400px", marginBottom: "20px" }}
+        >
+          {announcements.map((announcement, index) => (
+            <div key={index}>
+              <div
+                className="carousel-slide bg-image"
+                style={{ 
+                  backgroundImage: `url(${announcement.bgImage})`, 
+                  color: announcement.color 
+                }}
+              >
+                <h3>{announcement.title}</h3>
+                <p>{announcement.description}</p>
+              </div>
+            </div>
+          ))}
+        </Carousel>     
       </div>
 
       <VenueAndDateTime />
       
       <EventDetails />
-
-      <FAQ/>
+      
+      <FAQ />
     </div>
   );
 };

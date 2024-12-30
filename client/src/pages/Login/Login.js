@@ -15,31 +15,29 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Firebase Authentication for login
+  
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      console.log('Logged in successfully:', user);
-
-      // Check the user role based on email
-      if (email === 'cssociety@student.usm.my') {
+      
+      // Update login state
+      setIsLoggedIn(true);
+      
+      // Determine role based on email or other criteria
+      if (user.email === 'cssociety@student.usm.my') {
         setRole('admin');
-        setIsLoggedIn(true);
-        navigate('/admin'); // Admin dashboard
-      } else if (email.endsWith('@student.usm.my')) {
+        navigate('/admin');
+      } else if (email.endsWith('@student.usm.my')){
         setRole('student');
-        setIsLoggedIn(true);
-        navigate('/userhome'); // Student home page
-      } else {
+        navigate('/userhome');
+      }else {
         message.error('Invalid email address. Please enter your student email!');
       }
     } catch (error) {
-      console.error('Login error:', error);
-      message.error('Invalid email or password. Please try again.');
+      console.error('Login failed', error);
     }
   };
+  
 
   const handleForgotPswdRedirect = () => {
     navigate('/forgot-pswd');
