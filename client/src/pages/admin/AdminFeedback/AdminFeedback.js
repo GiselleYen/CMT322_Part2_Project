@@ -1,122 +1,99 @@
-import React, { useState } from "react";
-import { Divider, Row, Col, Card, Button, Tag, Select, Space, Pagination } from "antd";
+import React, { useState, useEffect } from "react";
+import { Divider, Row, Col, Card, Button, Tag, Select, Space, Pagination, message } from "antd";
 import { CheckCircleOutlined, MessageOutlined, SortAscendingOutlined, SortDescendingOutlined, FileDoneOutlined, FileTextOutlined, ExceptionOutlined } from "@ant-design/icons";
-import './AdminFeedback.css';
+import { collection, getDocs, updateDoc, doc, query, orderBy } from "firebase/firestore";
+import { db } from "../../../config/firebase"; // Ensure correct path to Firebase config
+import "./AdminFeedback.css";
 
 const FeedbackPage = () => {
-  const [feedbackData, setFeedbackData] = useState([
-    {
-      key: 1,
-      email: "wenping@student.usm.my",
-      feedback: "Can you add more fantastic features? ",
-      submissionDateTime: "2024-11-28 10:30 AM",
-      status: "Not Done",
-    },
-    {
-      key: 2,
-      email: "yensan@student.usm.my",
-      feedback: "Where can I get the event link?",
-      submissionDateTime: "2024-11-27 3:15 PM",
-      status: "Not Done",
-    },
-    {
-      key: 3,
-      email: "weien@student.usm.my",
-      feedback: "Thanks for the spotlight! It's really helpful for me!!",
-      submissionDateTime: "2024-11-23 2:45 PM",
-      status: "Done",
-    },
-    {
-      key: 4,
-      email: "wenyee@student.usm.my",
-      feedback: "I'm wish to explore more companies and internship opportunities!",
-      submissionDateTime: "2024-11-21 1:55 PM",
-      status: "Not Done",
-    },
-    {
-      key: 5,
-      email: "weien@student.usm.my",
-      feedback: "Will this event be recorded and shared with us? If yes, where we can get the recording?",
-      submissionDateTime: "2024-11-27 6:45 PM",
-      status: "Done",
-    },
-  ]);
-
-  const [sortedData, setSortedData] = useState(feedbackData);
+  const [feedbackData, setFeedbackData] = useState([]);
+  const [sortedData, setSortedData] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 3; // Set the number of items per page
 
-  // Calculate statistics
-  const calculateStatistics = (data) => {
-    const totalFeedback = data.length;
-    const feedbackDone = data.filter((feedback) => feedback.status === "Done").length;
-    const feedbackNotDone = totalFeedback - feedbackDone;
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
 
-    return { totalFeedback, feedbackDone, feedbackNotDone };
+  const fetchFeedback = async () => {
+    try {
+      const feedbackRef = collection(db, "feedback");
+      const q = query(feedbackRef, orderBy("submissionDateTime", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        submissionDateTime: new Date(doc.data().submissionDateTime.seconds * 1000).toLocaleString(),
+      }));
+      setFeedbackData(data);
+      setSortedData(data);
+    } catch (error) {
+      message.error("Failed to fetch feedback data: " + error.message);
+    }
   };
 
-  const { totalFeedback, feedbackDone, feedbackNotDone } = calculateStatistics(feedbackData);
-
   // Handle Sorting
-const handleSort = (order) => {
-  const sorted = [...sortedData].sort((a, b) => {
-    const dateA = new Date(a.submissionDateTime);
-    const dateB = new Date(b.submissionDateTime);
-    return order === "asc" ? dateA - dateB : dateB - dateA;
-  });
-  setSortedData(sorted);
-  setSortOrder(order);
-  setCurrentPage(1); // Reset to the first page
-};
-
-// Handle Filtering
-const handleFilter = (value) => {
-  setStatusFilter(value);
-  const filteredData = value === "All" ? feedbackData : feedbackData.filter((feedback) => feedback.status === value);
-
-  if (sortOrder) {
-    const sorted = [...filteredData].sort((a, b) => {
+  const handleSort = (order) => {
+    const sorted = [...sortedData].sort((a, b) => {
       const dateA = new Date(a.submissionDateTime);
       const dateB = new Date(b.submissionDateTime);
-      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+      return order === "asc" ? dateA - dateB : dateB - dateA;
     });
     setSortedData(sorted);
-  } else {
-    setSortedData(filteredData);
-  }
-  setCurrentPage(1); // Reset to the first page
-};
+    setSortOrder(order);
+    setCurrentPage(1); // Reset to the first page
+  };
+
+  // Handle Filtering
+  const handleFilter = (value) => {
+    setStatusFilter(value);
+    const filteredData =
+      value === "All" ? feedbackData : feedbackData.filter((feedback) => feedback.status === value);
+
+      if (sortOrder) {
+        const sorted = [...filteredData].sort((a, b) => {
+          const dateA = new Date(a.submissionDateTime);
+          const dateB = new Date(b.submissionDateTime);
+          return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+        });
+        setSortedData(sorted);
+      } else {
+        setSortedData(filteredData);
+      }
+      setCurrentPage(1); // Reset to the first page
+  };
 
   const handleReply = (email, feedback) => {
     const template = `Hello,
 
-  Thank you for your feedback. We’ve reviewed your input and would like to address your suggestions:
+    Thank you for your feedback. We’ve reviewed your input and would like to address your suggestions:
 
-  Your feedback:
-  "${feedback}"
+    Your feedback:
+    "${feedback}"
 
-  [Insert response here]
+    [Insert response here]
 
-  Best regards,  
-  CS Society`;
+    Best regards,  
+    CS Society`;
 
     const encodedTemplate = encodeURIComponent(template);
     window.location.href = `mailto:${email}?subject=Response to VCSIRF Feedback&body=${encodedTemplate}`;
   };
 
-  const handleMarkAsDone = (key) => {
-    // Update the feedback status to "Done"
-    const updatedData = feedbackData.map((item) =>
-      item.key === key ? { ...item, status: "Done" } : item
-    );
-
-    setFeedbackData(updatedData);
-    setSortedData(updatedData);
+  const handleMarkAsDone = async (id) => {
+    try {
+      const feedbackDoc = doc(db, "feedback", id);
+      await updateDoc(feedbackDoc, { status: "Done" });
+      message.success("Feedback marked as done!");
+      fetchFeedback(); // Refresh data after update
+    } catch (error) {
+      message.error("Failed to update feedback: " + error.message);
+    }
   };
 
-  // Pagination: slice the data based on current page and page size
+  //pagination
   const paginatedData = sortedData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const onPageChange = (page) => {
@@ -139,7 +116,7 @@ const handleFilter = (value) => {
               </Col>
               <Col style={{ marginLeft: "20px" }}>
                 <h3>Total Feedback</h3>
-                <p>{totalFeedback}</p>
+                <p>{feedbackData.length}</p>
               </Col>
             </Row>
           </Card>
@@ -153,7 +130,7 @@ const handleFilter = (value) => {
               </Col>
               <Col style={{ marginLeft: "20px" }}>
                 <h3>Feedback Done</h3>
-                <p>{feedbackDone}</p>
+                <p>{feedbackData.filter((item) => item.status === "Done").length}</p>
               </Col>
             </Row>
           </Card>
@@ -167,7 +144,7 @@ const handleFilter = (value) => {
               </Col>
               <Col style={{ marginLeft: "20px" }}>
                 <h3>Feedback Not Done</h3>
-                <p>{feedbackNotDone}</p>
+                <p>{feedbackData.filter((item) => item.status === "Not Done").length}</p>
               </Col>
             </Row>
           </Card>
@@ -178,16 +155,11 @@ const handleFilter = (value) => {
       <Divider orientation="right">
         <div className="filter-sort-controls" style={{ marginBottom: 20 }}>
           <Space>
-            <Select
-              defaultValue="All"
-              style={{ width: 120 }}
-              onChange={handleFilter}
-            >
+            <Select defaultValue="All" style={{ width: 120 }} onChange={handleFilter}>
               <Select.Option value="All">All Statuses</Select.Option>
               <Select.Option value="Done">Done</Select.Option>
               <Select.Option value="Not Done">Not Done</Select.Option>
             </Select>
-
             <Button
               className="sort_button"
               icon={sortOrder === "asc" ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
@@ -202,15 +174,13 @@ const handleFilter = (value) => {
       {/* Feedback Cards */}
       <Row gutter={[16, 16]}>
         {paginatedData.map((feedback) => (
-          <Col span={8} key={feedback.key}>
+          <Col span={8} key={feedback.id}>
             <Card
               hoverable
               title={`From ${feedback.email}`}
               bordered={false}
               extra={
-                <Tag color={feedback.status === "Done" ? "green" : "red"}>
-                  {feedback.status}
-                </Tag>
+                <Tag color={feedback.status === "Done" ? "green" : "red"}>{feedback.status}</Tag>
               }
               className="feedback-card"
             >
@@ -221,6 +191,7 @@ const handleFilter = (value) => {
                   {feedback.submissionDateTime}
                 </p>
               </div>
+              
               <div className="feedback-card-actions">
                 <Button
                   type="primary"
@@ -234,7 +205,7 @@ const handleFilter = (value) => {
                   type="default"
                   className="cancel_button"
                   icon={<CheckCircleOutlined />}
-                  onClick={() => handleMarkAsDone(feedback.key)}
+                  onClick={() => handleMarkAsDone(feedback.id)}
                   disabled={feedback.status === "Done"}
                 >
                   Mark as Done
@@ -245,14 +216,13 @@ const handleFilter = (value) => {
         ))}
       </Row>
 
-      {/* Pagination Controls */}
       <Pagination
         align="end"
         current={currentPage}
         pageSize={pageSize}
         total={sortedData.length}
         onChange={onPageChange}
-        style={{ marginTop: 30}}
+        style={{ marginTop: 30 }}
       />
     </div>
   );
