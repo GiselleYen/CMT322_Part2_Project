@@ -19,7 +19,9 @@ const ParticipantPage = () => {
     const fetchParticipants = async () => {
       try {
         const data = await participantService.getParticipants();
-        setParticipantData(data);
+        // Filter out the participant with the email "cssociety@student.usm.my"
+        const filteredData = data.filter(participant => participant.email !== "cssociety@student.usm.my");
+        setParticipantData(filteredData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -99,7 +101,7 @@ const ParticipantPage = () => {
         <Spin size="large" />
       </div>
     );
-}
+  }
 
   return (
     <div className="participant-page">
@@ -139,7 +141,7 @@ const ParticipantPage = () => {
 
       <Table
         className="participant-table"
-        dataSource={participantData}
+        dataSource={participantData} // Updated to use filtered data
         columns={columns}
         pagination={{ pageSize: 5 }}
       />
