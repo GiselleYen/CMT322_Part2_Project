@@ -1,58 +1,47 @@
-import React, { useState } from "react";
-import { Divider, Table, Card, Row, Col } from "antd";
+import React, { useState, useEffect } from "react";
+import { Divider, Table, Card, Row, Col, Spin } from "antd";
 import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
+import { participantService } from '../../../services/Participant/participantService'; 
 import './Participant.css';
 
 const ParticipantPage = () => {
+  const [participantData, setParticipantData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [statistics, setStatistics] = useState({
+    totalParticipants: 0,
+    recentParticipants: 0
+  });
+  const [error, setError] = useState(null);
 
-  const participantData = [
-    {
-      key: 1,
-      name: "Soh Yen San",
-      email: "yensan@student.usm.my",
-      registrationDate: "2024-11-27",
-      matricNo: "158339",
-      year: "Year 3",
-    },
-    {
-      key: 2,
-      name: "Ng Wen Ping",
-      email: "wenping@student.usm.my",
-      registrationDate: "2024-11-26",
-      matricNo: "158772",
-      year: "Year 2",
-    },
-    {
-      key: 3,
-      name: "Yee Wei En",
-      email: "weien@student.usm.my",
-      registrationDate: "2024-11-23",
-      matricNo: "157929",
-      year: "Year 3",
-    },
-    {
-      key: 4,
-      name: "Wong Wen Yee",
-      email: "wenyee@student.usm.my",
-      registrationDate: "2024-11-20",
-      matricNo: "159490",
-      year: "Year 4",
-    },
-   
-  ];
+  // Fetch participants and statistics on component mount
+  useEffect(() => {
+    setLoading(true);
+    const fetchParticipants = async () => {
+      try {
+        const data = await participantService.getParticipants();
+        setParticipantData(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Calculate the number of participants in the last 7 days
-  const recentParticipants = participantData.filter(
-    (p) => new Date() - new Date(p.registrationDate) <= 7 * 24 * 60 * 60 * 1000
-  ).length;
+    const fetchStatistics = async () => {
+      try {
+        const stats = await participantService.getStatistics();
+        setStatistics(stats);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Calculate the number of participants 7-14 days ago
-  const previousParticipants = participantData.filter(
-    (p) => new Date() - new Date(p.registrationDate) > 7 * 24 * 60 * 60 * 1000 &&
-           new Date() - new Date(p.registrationDate) <= 14 * 24 * 60 * 60 * 1000
-  ).length;
+    fetchParticipants();
+    fetchStatistics();
 
-  const totalParticipants = participantData.length;
+  }, []);
 
   const columns = [
     {
@@ -68,27 +57,49 @@ const ParticipantPage = () => {
     },
     {
       title: "Matric Number",
-      dataIndex: "matricNo",
-      key: "matricNo",
+      dataIndex: "matricNumber",
+      key: "matricNumber",
     },
     {
-        title: "Year of Study",
-        dataIndex: "year",
-        key: "year",
-        sorter: (a, b) => {
-          const yearA = parseInt(a.year.split(" ")[1]);
-          const yearB = parseInt(b.year.split(" ")[1]);
-          return yearA - yearB;
-        },
+      title: "Year of Study",
+      dataIndex: "yearOfStudy",
+      key: "yearOfStudy",
+      sorter: (a, b) => {
+        // Check if yearOfStudy exists and split the value, otherwise default to 0
+        const yearA = a.yearOfStudy ? parseInt(a.yearOfStudy.split(" ")[1]) : 0;
+        const yearB = b.yearOfStudy ? parseInt(b.yearOfStudy.split(" ")[1]) : 0;
+        return yearA - yearB;
       },
+    },
     {
-        title: "Registration Date",
-        dataIndex: "registrationDate",
-        key: "registrationDate",
-        sorter: (a, b) =>
-          new Date(a.registrationDate) - new Date(b.registrationDate),
+      title: "Registration Date",
+      dataIndex: "registrationDate",
+      key: "registrationDate",
+      sorter: (a, b) => {
+
+        // Convert DD/MM/YYYY to YYYY-MM-DD format
+        const convertToDate = (dateString) => {
+          const [day, month, year] = dateString.split('/');
+          return new Date(`${year}-${month}-${day}`);
+        };
+    
+        // Convert the registration dates to Date objects
+        const dateA = a.registrationDate ? convertToDate(a.registrationDate) : new Date(0);
+        const dateB = b.registrationDate ? convertToDate(b.registrationDate) : new Date(0);
+    
+        // Return the comparison result for sorting
+        return dateA - dateB;
       },
+    }
   ];
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <Spin size="large" />
+      </div>
+    );
+}
 
   return (
     <div className="participant-page">
@@ -99,33 +110,32 @@ const ParticipantPage = () => {
       <Row gutter={[16, 16]} className="statistics-container">
         <Col span={12}>
             <Card className="stat-card" style={{ height: '100%' }}>
-            <Row align="middle">
+              <Row align="middle">
                 <Col>
-                <UserOutlined style={{ fontSize: "42px", color: "#1e0250"}} />
+                  <UserOutlined style={{ fontSize: "42px", color: "#1e0250" }} />
                 </Col>
                 <Col style={{ marginLeft: "20px" }}>
-                <h3>Total Participants</h3>
-                <p>{totalParticipants}</p>
+                  <h3>Total Participants</h3>
+                  <p>{statistics.totalParticipants}</p>
                 </Col>
-            </Row>
+              </Row>
             </Card>
         </Col>
         
         <Col span={12}>
-            <Card className="stat-card" style={{ height: '100%' }} >
-            <Row align="middle">
+            <Card className="stat-card" style={{ height: '100%' }}>
+              <Row align="middle">
                 <Col>
-                <CalendarOutlined style={{ fontSize: "42px", color: "#1e0250" }} />
+                  <CalendarOutlined style={{ fontSize: "42px", color: "#1e0250" }} />
                 </Col>
                 <Col style={{ marginLeft: "20px" }}>
-                <h3>New Participants (Last 7 Days)</h3>
-                <p>{recentParticipants}</p>
+                  <h3>New Participants (Last 7 Days)</h3>
+                  <p>{statistics.recentParticipants}</p>
                 </Col>
-            </Row>
+              </Row>
             </Card>
         </Col>
-    </Row>
-
+      </Row>
 
       <Table
         className="participant-table"
