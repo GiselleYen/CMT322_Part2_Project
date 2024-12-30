@@ -34,6 +34,7 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => {
         message.error('Invalid email address. Please enter your student email!');
       }
     } catch (error) {
+      message.error('Login failed. Please check your email and password.');
       console.error('Login failed', error);
     }
   };

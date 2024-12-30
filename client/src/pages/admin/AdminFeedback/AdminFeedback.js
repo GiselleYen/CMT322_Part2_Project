@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Divider, Row, Col, Card, Button, Tag, Select, Space, Pagination, message } from "antd";
+import { Divider, Row, Col, Card, Button, Tag, Select, Space, Pagination, message, Spin } from "antd";
 import { CheckCircleOutlined, MessageOutlined, SortAscendingOutlined, SortDescendingOutlined, FileDoneOutlined, FileTextOutlined, ExceptionOutlined } from "@ant-design/icons";
 import { collection, getDocs, updateDoc, doc, query, orderBy } from "firebase/firestore";
 import { db } from "../../../config/firebase"; // Ensure correct path to Firebase config
@@ -7,6 +7,7 @@ import "./AdminFeedback.css";
 
 const FeedbackPage = () => {
   const [feedbackData, setFeedbackData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [sortedData, setSortedData] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState(null);
@@ -14,6 +15,7 @@ const FeedbackPage = () => {
   const pageSize = 3; // Set the number of items per page
 
   useEffect(() => {
+    setLoading(true);
     fetchFeedback();
   }, []);
 
@@ -31,6 +33,8 @@ const FeedbackPage = () => {
       setSortedData(data);
     } catch (error) {
       message.error("Failed to fetch feedback data: " + error.message);
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -99,6 +103,14 @@ const FeedbackPage = () => {
   const onPageChange = (page) => {
     setCurrentPage(page);
   };
+
+  if (loading) {
+      return (
+        <div className="loading-container">
+          <Spin size="large" />
+        </div>
+      );
+  }
 
   return (
     <div className="admin-feedback-page">
