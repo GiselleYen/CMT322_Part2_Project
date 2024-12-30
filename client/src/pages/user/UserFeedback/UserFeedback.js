@@ -1,29 +1,36 @@
 import React, { useState } from 'react';
 import './UserFeedback.css'; 
 import Button from '../../../components/button/button';
-import { message, Input } from 'antd';
+import { message, Input, Spin } from 'antd';  // Importing Spin from Ant Design
 import { submitFeedback } from '../../../services/Feedback/feedbackService'; 
 const { TextArea } = Input;
 
 const UserFeedbackPage = () => {
   const [feedback, setFeedback] = useState('');
+  const [loading, setLoading] = useState(false); // State for loading indicator
 
   // Function to submit feedback
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!feedback) {
       message.error('Please provide feedback.');
       return;
     }
 
+    setLoading(true); // Show loading indicator
+
     try {
       await submitFeedback(feedback); // Call the service function
       setFeedback(''); // Reset feedback on successful submission
+      message.success('Feedback submitted successfully!');
     } catch (error) {
       console.error('Failed to submit feedback:', error);
+      message.error('Failed to submit feedback. Please try again later.');
+    } finally {
+      setLoading(false); // Hide loading indicator
     }
   };
-
 
   return (
     <div className="feedback-page">
@@ -36,7 +43,7 @@ const UserFeedbackPage = () => {
 
       <div className="feedback-container">
         <h2>Submit Your Feedback</h2>
-        <p>We are glad and honest to any inquiries, feedback and comment.</p>
+        <p>We are glad and honest to any inquiries, feedback, and comment.</p>
 
         <form onSubmit={handleSubmit}>
           <div className="input-container">
@@ -49,7 +56,19 @@ const UserFeedbackPage = () => {
             />
           </div>
 
-          <Button text="Submit" onClick={handleSubmit} styleClass="submit-btn" />
+          <Button 
+            text="Submit" 
+            onClick={handleSubmit} 
+            styleClass="submit-btn" 
+            disabled={loading} // Disable button while loading
+          />
+
+          {/* Show the Spin component when submitting */}
+          {loading && (
+            <div className="loading-spinner">
+              <Spin />
+            </div>
+          )}
         </form>
       </div>
     </div>

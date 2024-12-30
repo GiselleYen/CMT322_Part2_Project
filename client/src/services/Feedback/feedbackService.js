@@ -20,7 +20,7 @@ export const submitFeedback = async (feedbackText) => {
 
   try {
     await addDoc(collection(db, "feedback"), feedbackData);
-    message.success("Feedback submitted successfully!");
+    // message.success("Feedback submitted successfully!");
   } catch (error) {
     console.error("Error submitting feedback:", error);
     message.error("Failed to submit feedback: " + error.message);
