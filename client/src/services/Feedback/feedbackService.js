@@ -1,7 +1,6 @@
-// src/services/feedbackService.js
-import { collection, addDoc } from "firebase/firestore"; // Import Firestore functions
-import { message } from "antd"; // Import Ant Design notification system
-import { auth, db } from "../../config/firebase"; // Ensure correct path to Firebase config
+import { collection, addDoc } from "firebase/firestore"; 
+import { message } from "antd"; 
+import { auth, db } from "../../config/firebase"; 
 
 export const submitFeedback = async (feedbackText) => {
   const user = auth.currentUser;
