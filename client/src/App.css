@@ -149,5 +149,23 @@ body, html {
   margin-bottom: -30px !important; /* Remove extra margin if any */
 }
 
+/* Ant Design Spin */
+.ant-spin-dot i {
+  background-color: #1e0250 !important;
+  
+}
+
+.loading-container {
+  position: relative;
+  height: 100vh; /* Full height for centering */
+}
+
+.ant-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 
 
