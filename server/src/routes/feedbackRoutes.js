@@ -4,12 +4,12 @@ const feedbackController = require('../controllers/feedbackController');  // Ens
 const { authenticateUser } = require('../middleware/auth');
 
 // Submit Feedback (Authenticated)
-router.post('/feedback', authenticateUser, feedbackController.submitFeedback); // Use the correct function reference here
+router.post('/', authenticateUser, feedbackController.submitFeedback); // Use the correct function reference here
 
 // Get All Feedback
-router.get('/feedback', feedbackController.getAllFeedback);
+router.get('/', feedbackController.getAllFeedback);
 
 // Update Feedback Status
-router.put('/feedback/:id', feedbackController.updateFeedbackStatus);
+router.put('/:id', feedbackController.updateFeedbackStatus);
 
 module.exports = router;
