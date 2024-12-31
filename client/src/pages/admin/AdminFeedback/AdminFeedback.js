@@ -5,6 +5,9 @@ import { collection, getDocs, updateDoc, doc, query, orderBy } from "firebase/fi
 import { db } from "../../../config/firebase"; // Ensure correct path to Firebase config
 import "./AdminFeedback.css";
 
+// Utility function (encode)
+const encodeForMailto = (text) => encodeURIComponent(text.replace(/\r?\n/g, '%0A'));
+
 const FeedbackPage = () => {
   const [feedbackData, setFeedbackData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -70,21 +73,28 @@ const FeedbackPage = () => {
   };
 
   const handleReply = (email, feedback) => {
-    const template = `Hello,
-
+    const handleReply = (email, feedback) => {
+      const template = `Hello,
+    
     Thank you for your feedback. We’ve reviewed your input and would like to address your suggestions:
-
+    
     Your feedback:
     "${feedback}"
-
+    
     [Insert response here]
-
-    Best regards,  
+    
+    Best regards,
     CS Society`;
-
-    const encodedTemplate = encodeURIComponent(template);
-    window.location.href = `mailto:${email}?subject=Response to VCSIRF Feedback&body=${encodedTemplate}`;
+    
+      // Use encodeURIComponent for the entire template
+      const encodedTemplate = encodeURIComponent(template);
+    
+      // Construct the mailto link
+      window.location.href = `mailto:${email}?subject=Response to VCSIRF Feedback&body=${encodedTemplate}`;
+    };
+    
   };
+  
 
   const handleMarkAsDone = async (id) => {
     try {
