@@ -5,40 +5,51 @@ import Button from '../../components/button/button';
 import { message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import InputField from '../../components/inputfield/inputfield';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Import Firebase auth methods
-import { auth } from '../../config/firebase'; // Import your Firebase auth configuration
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../config/firebase';
+import { authService } from '../../services/authService'; // Import session management service
 
 const LoginPage = ({ setIsLoggedIn, setRole }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      
-      // Update login state
+
+      // Get ID token and calculate session expiration (30 minutes)
+      const idToken = await user.getIdToken();
+      const expiryTime = new Date().getTime() + 30* 60 * 1000; // 30 minutes in milliseconds
+
+      // Determine user role based on email
+      const role = user.email === 'cssociety@student.usm.my' ? 'admin' : 'student';
+
+      // Store session data locally
+      authService.setSession(role, idToken, expiryTime);
+
+      // Update state in parent component
       setIsLoggedIn(true);
-      
-      // Determine role based on email or other criteria
-      if (user.email === 'cssociety@student.usm.my') {
-        setRole('admin');
+      setRole(role);
+
+      // Redirect based on role
+      if (role === 'admin') {
         navigate('/admin');
-      } else if (email.endsWith('@student.usm.my')){
-        setRole('student');
+      } else if (email.endsWith('@student.usm.my')) {
         navigate('/userhome');
-      }else {
-        message.error('Invalid email address. Please enter your student email!');
+      } else {
+        throw new Error('Invalid email domain. Please use your student email.');
       }
     } catch (error) {
-      message.error('Login failed. Please check your email and password.');
-      console.error('Login failed', error);
+      setError('Login failed. Please check your email and password.');
+      console.error('Login error:', error);
+      message.error(error.message || 'An unexpected error occurred.');
     }
   };
-  
 
   const handleForgotPswdRedirect = () => {
     navigate('/forgot-pswd');
@@ -81,7 +92,7 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => {
             required
             prefixIcon={<LockOutlined />}
           />
-          
+
           <p className="forgot-pswd" onClick={handleForgotPswdRedirect}>
             Forgot Password?
           </p>

@@ -30,6 +30,10 @@ function Header({ isLoggedIn, role, onLogout }) {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false); // Close menu after a link is clicked (for mobile view)
+  };
+
   return (
     <header className="header">
       <div className="logo" onClick={handleLogoClick}>
