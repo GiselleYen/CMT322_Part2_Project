@@ -9,7 +9,7 @@ function SessionChecker() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' ||location.pathname === '/register' ||location.pathname === '/forgot-pswd' ) {
       // No need to handle session expiry on the login page
       return;
     }
