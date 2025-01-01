@@ -5,7 +5,8 @@ import { message, Input, Spin } from 'antd';  // Importing Spin from Ant Design
 import { submitFeedback } from '../../../services/Feedback/feedbackService'; 
 const { TextArea } = Input;
 
-const UserFeedbackPage = () => {
+// const UserFeedbackPage = () => 
+const UserFeedbackPage = ({ isLoggedIn }) =>{
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false); // State for loading indicator
 
@@ -31,6 +32,10 @@ const UserFeedbackPage = () => {
       setLoading(false); // Hide loading indicator
     }
   };
+
+  if (!isLoggedIn) {
+    return <div className='login-alert'><h5>Please log in to view the content.</h5></div>;
+  }
 
   return (
     <div className="feedback-page">

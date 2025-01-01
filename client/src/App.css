@@ -167,5 +167,9 @@ body, html {
   transform: translate(-50%, -50%);
 }
 
+  /* If doesnt login, show..*/
+  .login-alert{
+    text-align: center;
+  }
 
 

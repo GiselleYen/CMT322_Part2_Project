@@ -41,7 +41,7 @@ const UserHomePage = ({ isLoggedIn }) => {
   }, []);
 
   if (!isLoggedIn) {
-    return <div>Please log in to view the content.</div>;
+    return <div className='login-alert'><h5>Please log in to view the content.</h5></div>;
   }
 
   return (

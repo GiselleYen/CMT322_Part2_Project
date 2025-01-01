@@ -8,7 +8,7 @@ import "./AdminFeedback.css";
 // Utility function (encode)
 const encodeForMailto = (text) => encodeURIComponent(text.replace(/\r?\n/g, '%0A'));
 
-const FeedbackPage = () => {
+const FeedbackPage = ({ isLoggedIn }) => {
   const [feedbackData, setFeedbackData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sortedData, setSortedData] = useState([]);
@@ -113,6 +113,10 @@ const FeedbackPage = () => {
   const onPageChange = (page) => {
     setCurrentPage(page);
   };
+
+  if (!isLoggedIn) {
+    return <div className='login-alert'><h5>Please log in to view the content.</h5></div>;
+  }
 
   if (loading) {
       return (

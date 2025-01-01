@@ -4,7 +4,7 @@ import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
 import { participantService } from '../../../services/Participant/participantService'; 
 import './Participant.css';
 
-const ParticipantPage = () => {
+const ParticipantPage = ({ isLoggedIn }) => {
   const [participantData, setParticipantData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [statistics, setStatistics] = useState({
@@ -94,6 +94,10 @@ const ParticipantPage = () => {
       },
     }
   ];
+
+  if (!isLoggedIn) {
+    return <div className='login-alert'><h5>Please log in to view the content.</h5></div>;
+  }
 
   if (loading) {
     return (
