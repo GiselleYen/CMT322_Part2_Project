@@ -9,88 +9,56 @@ const { TextArea } = Input;
 
 const A_InternshipTips = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({});
+  const [modalTip, setModalTip] = useState({});
   const [form] = Form.useForm();
-  const fileInputRef = useRef(null); // Add a ref for the file input element
-  const [shortCardData, setShortCardData] = useState([
+  const [internTipsData, setinternTipsData] = useState([
     {
       title: "Resume Preparation",
       description: "Create a professional resume that showcases skills, academic achievements, and relevant projects to stand out.",
       imageSrc: "https://unchannel.org/images/blog/unchannel-resume-tips.jpg",
-      buttonText: "Read More",
       sharedBy: "Mr.Hia Wei Qi",
       focusTitle: "Required and Optional Skills",
-      focusDescription: [
-        "Highlight relevant skills that match the required and optional skills in the job description.",
-        "Tailor your resume to emphasize the skills, projects, or experiences that align with the company's expectations.",
-        "Showcase your technical and soft skills in alignment with the scope of work.",
-        "Include keywords from the job description to pass Applicant Tracking Systems (ATS).",
-      ],
+      focusDescription: "Highlight relevant skills that match the required and optional skills in the job description.\nTailor your resume to emphasize the skills, projects, or experiences that align with the company's expectations.\nShowcase your technical and soft skills in alignment with the scope of work.\nInclude keywords from the job description to pass Applicant Tracking Systems (ATS).",
     },
     {
       title: "Interview Readiness",
       description: "Research the company, rehearse common questions, and prepare to explain how you can add value to the organization.",
       imageSrc: "https://jobs.theguardian.com/getasset/7096d9b7-59a6-49a5-904d-a117d3c0c4c6/",
-      buttonText: "Read More",
       sharedBy: "Ms.Niana",
       focusTitle: "Scope of Work",
-      focusDescription:[
-          "Research the job's scope of work and prepare to discuss how your experiences align with the company's needs.",
-          "Practice answering behavioral and situational questions that demonstrate your understanding of the role.",
-          "Develop clear examples of how you've applied relevant skills in past projects or internships.",
-      ],
+      focusDescription:"Research the job's scope of work and prepare to discuss how your experiences align with the company's needs.\nPractice answering behavioral and situational questions that demonstrate your understanding of the role.\nDevelop clear examples of how you've applied relevant skills in past projects or internships.",
     },
     {
       title: "Time Management",
       description: "Prioritize tasks effectively to meet deadlines and balance academic responsibilities with internship duties.",
       imageSrc: "https://sertifier.com/blog/wp-content/uploads/2023/10/The-Art-of-Time-Management-Skills.jpg",
-      buttonText: "Read More",
       sharedBy: "Ms.Piruntha",
       focusTitle: "Internship Expectations",
-      focusDescription: [
-        "Show awareness of time management as a key skill to handle multiple responsibilities mentioned in the job description.",
-        "Discuss tools or methods you use to manage deadlines effectively, such as calendars, project management tools, or prioritization techniques.",
-        ],
+      focusDescription: "Show awareness of time management as a key skill to handle multiple responsibilities mentioned in the job description.\nDiscuss tools or methods you use to manage deadlines effectively, such as calendars, project management tools, or prioritization techniques.",
       },
     {
       title: "Professional Communication",
       description: "Practice clear and respectful communication in conversations, emails, reports, and team meetings.",
       imageSrc: "https://www.sydle.com/blog/assets/post/improve-communication-62506c4d3bbdd67657964ba5/improve-communication.jpg",
-      buttonText: "Read More",
       sharedBy: "Mr.Hia Wei Qi",
       focusTitle: "Collaboration and Soft Skills",
-      focusDescription: [
-        "Many job descriptions emphasize teamwork and communication.",
-        "Highlight your ability to convey ideas clearly and collaborate effectively in diverse teams.",
-        "Prepare examples of how you’ve demonstrated professional communication in past experiences (e.g., writing reports, presenting, or handling conflicts)."
-      ],
+      focusDescription: "Many job descriptions emphasize teamwork and communication.\nHighlight your ability to convey ideas clearly and collaborate effectively in diverse teams.\nPrepare examples of how you’ve demonstrated professional communication in past experiences (e.g., writing reports, presenting, or handling conflicts)."
     },
     {
       title: "Skill Enhancement",
       description: "Focus on learning computing tools, software, and methodologies relevant to the industry during the internship.",
       imageSrc: "https://imageio.forbes.com/specials-images/imageserve/630317507c39bc12ccfa8c6c/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds",
-      buttonText: "Read More",
       sharedBy: "Ms.Liana",
       focusTitle: "Growth and Adaptability",
-      focusDescription: [
-        "Show how you are actively enhancing your skills to meet the required and optional skills listed in the job description.",
-        "Discuss certifications, courses, or projects you’ve undertaken to develop competencies relevant to the role.",
-        "Highlight your eagerness to learn on the job, which aligns with the company's expectations for growth-oriented interns.",
-      ],
+      focusDescription: "Show how you are actively enhancing your skills to meet the required and optional skills listed in the job description.\nDiscuss certifications, courses, or projects you’ve undertaken to develop competencies relevant to the role.\nHighlight your eagerness to learn on the job, which aligns with the company's expectations for growth-oriented interns.",
     },
     {
       title: "Adaptability",
       description: "Be open to learning new things, adjusting to challenges, and stepping outside your comfort zone.",
       imageSrc: "https://assets.thehansindia.com/h-upload/2020/02/14/263015-adaptability.webp",
-      buttonText: "Read More",
       sharedBy: "Ms.Piruntha",
       focusTitle: "Being Open to Learning and Adjusting to Challenges",
-      focusDescription: [
-        "Adaptability involves being open to learning new things, adjusting to challenges, and stepping outside your comfort zone.", 
-        "In an internship, this might mean learning new skills, adjusting to changing job requirements, or taking on unfamiliar tasks.", 
-        "Demonstrating that you can adapt to new environments and challenges will show that you're flexible and capable of thriving in dynamic situations.",
-        "Provide examples where you had to step outside your comfort zone, like learning new software or taking on additional responsibilities, and how you successfully adapted to the situation.",
-      ],
+      focusDescription: "Adaptability involves being open to learning new things, adjusting to challenges, and stepping outside your comfort zone.\nIn an internship, this might mean learning new skills, adjusting to changing job requirements, or taking on unfamiliar tasks.\nDemonstrating that you can adapt to new environments and challenges will show that you're flexible and capable of thriving in dynamic situations.\nProvide examples where you had to step outside your comfort zone, like learning new software or taking on additional responsibilities, and how you successfully adapted to the situation.",
     },
   ]);
 
@@ -104,33 +72,31 @@ const A_InternshipTips = () => {
     }
   };
 
-
-
-
-  // Reset modal state when opening the modal for adding a new card
+  // Handle adding new cards
   const handleAddNewClick = () => {
-    setModalContent({ imageSrc: "" }); // Reset modal content including imageSrc
+    setModalTip({ imageSrc: "" }); // Reset modal content including imageSrc
     form.resetFields(); // Reset form fields
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Clear the file input value
-    }
     setIsModalOpen(true);
   };
 
   const handleEditClick = (card) => {
-    setModalContent(card); // Set modal content to the card that is being edited
+    setModalTip(card); // Set modal content to the card that is being edited
     form.setFieldsValue({
       title: card.title,
       description: card.description,
       sharedBy: card.sharedBy,
       focusTitle: card.focusTitle,
-      focusDescription: card.focusDescription
-        .map((line) => `• ${line}`) // Add bullets to each line
-        .join("\n"), // Join • into a single string with new lines
-      // Exclude imageSrc here as it will be handled separately
+      focusDescription: Array.isArray(card.focusDescription)
+        ? card.focusDescription.map((line) => `• ${line}`).join("\n")
+        : card.focusDescription
+          .split("\n") // Split string into array by newline
+          .map((line) => `• ${line}`) // Add bullets to each line
+          .join("\n"), // Join into a single string with new lines
+      imageURL: card.imageSrc, // Include the image URL for editing
     });
     setIsModalOpen(true);
   };
+  
 
   const handleSave = () => {
     form
@@ -138,30 +104,29 @@ const A_InternshipTips = () => {
       .then((values) => {
         // Process the data only if validation passes
         const updatedContent = {
-          ...modalContent,
+          ...modalTip,
           ...values,
           focusDescription: values.focusDescription
             .split("\n") // Split lines into an array
             .map((line) => line.replace(/^•\s*/, "")) // Remove bullets and leading spaces
             .filter((line) => line.trim() !== ""), // Remove empty lines
-          imageSrc: modalContent.imageSrc || "", // Ensure imageSrc is included in the updated content
         };
   
-        if (modalContent.title) {
+        if (modalTip.title) {
           // Update existing card
-          setShortCardData((prevData) =>
+          setinternTipsData((prevData) =>
             prevData.map((card) =>
-              card.title === modalContent.title ? updatedContent : card
+              card.title === modalTip.title ? updatedContent : card
             )
           );
           message.success("Internship tip updated successfully!"); // Success message for update
         } else {
           // Add new card
-          setShortCardData((prevData) => [
+          setinternTipsData((prevData) => [
             ...prevData,
             {
               ...updatedContent,
-              imageSrc: modalContent.imageSrc || "", // If no image, set an empty string
+              imageSrc: modalTip.imageSrc || "", // If no image, set an empty string
             },
           ]);
           message.success("New internship tip added successfully!"); // Success message for adding new tip
@@ -178,20 +143,13 @@ const A_InternshipTips = () => {
 
   const handleModalClose = () => {
     // Reset the imageSrc to empty when closing the modal
-    setModalContent((prev) => ({ ...prev, imageSrc: "" }));
+    setModalTip((prev) => ({ ...prev, imageSrc: "" }));
     setIsModalOpen(false);
   };
 
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setModalContent((prev) => ({ ...prev, imageSrc: event.target.result }));
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    } else {
-      setModalContent((prev) => ({ ...prev, imageSrc: "" }));
-    }
+  // Replace file input with image URL input
+  const handleImageUrlChange = (e) => {
+    setModalTip((prev) => ({ ...prev, imageSrc: e.target.value }));
   };
 
   const chunkArray = (array, size) => {
@@ -202,6 +160,7 @@ const A_InternshipTips = () => {
     return chunks;
   };
 
+  
   const handleDelete = (key) => {
     Modal.confirm({
       title: "Are you sure you want to delete this Internship Tip?",
@@ -216,7 +175,7 @@ const A_InternshipTips = () => {
         className: "cancel_button",
       },
       onOk() {
-        setShortCardData((prevData) => prevData.filter((card) => card.title !== key));
+        setinternTipsData((prevData) => prevData.filter((card) => card.title !== key));
         message.success ("Internship tip deleted successfully!"); // Display success message after deletion
       },
       onCancel() {
@@ -225,7 +184,7 @@ const A_InternshipTips = () => {
     });
   };
 
-  const cardRows = chunkArray(shortCardData, 3);
+  const cardRows = chunkArray(internTipsData, 3);
 
   return (
     <div className="internship-tips-container">
@@ -258,7 +217,7 @@ const A_InternshipTips = () => {
       {/* Modal Section */}
       <Modal
         className="A_InternTips-modal"
-        title={<span className="modal-title-custom">{modalContent.title ? "Edit Internship Tip" : "Add New Internship Tip"}</span>}
+        title={<span className="modal-title-custom">{modalTip.title ? "Edit Internship Tip" : "Add New Internship Tip"}</span>}
         open={isModalOpen}
         onOk={handleSave}
         onCancel={handleModalClose}
@@ -294,14 +253,24 @@ const A_InternshipTips = () => {
         }
       >
         <Form form={form} layout="vertical" className="A_InternTips-form" style={{ padding: "20px" }}>
-          <Form.Item label="Upload Image">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              ref={fileInputRef} // Attach the ref here
+        <Form.Item
+            label="Image URL"
+            name="imageURL"
+            rules={[
+              {
+                required: true,
+                message: "Please enter the Image URL!",
+              },
+            ]}
+          >
+            <Input
+              value={modalTip.imageSrc}
+              onChange={handleImageUrlChange}
+              placeholder="Enter an image URL for the internship tip"
             />
           </Form.Item>
+
+
           <Form.Item
             name="title"
             label="Title"

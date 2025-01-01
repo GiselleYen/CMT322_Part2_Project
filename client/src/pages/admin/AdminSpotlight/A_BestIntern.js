@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { Modal, Typography, Form, Input, message } from "antd";
+import React, { useState, useEffect } from 'react';
+import { Modal, Form, Input, message, Button } from 'antd';
 import A_LongCard from "../../../components/a_longcard/a_longcard";
 import ButtonComponent from "../../../components/button/button";
 import "./A_BestIntern.css";
-
-const { Paragraph } = Typography;
+import { bestInternServices } from '../../../services/InternSportlight/bestInternServices';
+import PropTypes from 'prop-types';
+import { auth } from '../../../config/firebase';
 
 const BestIntern = () => {
+  const buttonText = "Edit";
   const [bestInternData, setBestInternData] = useState([
     {
       achieverRank: "Top 1 Achiever",
@@ -14,27 +16,11 @@ const BestIntern = () => {
       position: "NI RND Software Engineer Intern 2023",
       quote: '"Great things happen outside your comfort zone—dare to explore!"',
       img: "/assets/images/HiaWeiQi.png",
-      buttonText: "Edit",
-      buttonLink: "",
-      modalContent: {
-        project: [
-          "Developing or enhancing software for test and measurement equipment.",
-          "Working on modules related to automated testing, signal processing, or hardware integration.",
-          "Participating in agile development processes like sprint planning, feature implementation, and bug fixing.",
-        ],
-        experience: [
-          "Exposure to software development life cycles (SDLC) and agile methodologies.",
-          "Hands-on experience with programming languages such as Python, C++, or LabVIEW.",
-          "Collaborating with cross-functional teams, including hardware and firmware engineers.",
-        ],
-        growth: [
-          "Development of strong problem-solving skills in a technical and structured manner.",
-          "Gaining proficiency in debugging and optimizing code for performance and reliability.",
-          "Enhanced communication and teamwork skills through cross-departmental collaborations.",
-        ],
-        email: "enweiyee0923@gmail.com",
-        linkedin: "https://www.linkedin.com/in/hia-wei-qi-802a87116/",
-      },
+      project: "Developing or enhancing software for test and measurement equipment.\nWorking on modules related to automated testing, signal processing, or hardware integration.\nParticipating in agile development processes like sprint planning, feature implementation, and bug fixing.",
+      experience: "Exposure to software development life cycles (SDLC) and agile methodologies.\nHands-on experience with programming languages such as Python, C++, or LabVIEW.\nCollaborating with cross-functional teams, including hardware and firmware engineers.",
+      growth: "Development of strong problem-solving skills in a technical and structured manner.\nGaining proficiency in debugging and optimizing code for performance and reliability.\nEnhanced communication and teamwork skills through cross-departmental collaborations.",
+      email: "enweiyee0923@gmail.com",
+      linkedin: "https://www.linkedin.com/in/hia-wei-qi-802a87116/",
     },
     {
       achieverRank: "Top 2 Achiever",
@@ -42,28 +28,11 @@ const BestIntern = () => {
       position: "TNB Data Analytic Intern 2023",
       quote: '"Data may not always tell the story you want, but it always tells the story you need."',
       img: "/assets/images/NurLiana.png",
-      buttonText: "Edit",
-      buttonLink: "",
-      modalContent: {
-        project: [
-          "Conducting data analysis on operational, customer, or financial datasets.",
-          "Supporting predictive analytics or machine learning projects for energy efficiency or grid optimization.",
-          "Building dashboards for real-time monitoring or historical analysis of energy usage.",
-        ],
-        experience: [
-          "Working with tools like Python, R, or SQL for data processing and analysis.",
-          "Experience with business intelligence platforms like Power BI or Tableau.",
-          "Exposure to large-scale energy datasets and utility-specific challenges.",
-          "Understanding energy management systems and key performance indicators in the power sector.",
-        ],
-        growth: [
-          "Developing analytical thinking and critical reasoning for decision-making based on data insights.",
-          "Improved presentation skills to communicate technical findings to non-technical stakeholders.",
-          "Familiarity with energy industry standards and sustainability goals.",
-        ],
-        email: "nurliana@gmail.com",
-        linkedin: "https://www.linkedin.com/in/nur-liana-samsudin-454a15150/",
-      },
+      project:"Conducting data analysis on operational, customer, or financial datasets.\nSupporting predictive analytics or machine learning projects for energy efficiency or grid optimization.\nBuilding dashboards for real-time monitoring or historical analysis of energy usage.",
+      experience: "Working with tools like Python, R, or SQL for data processing and analysis.\nExperience with business intelligence platforms like Power BI or Tableau.\nExposure to large-scale energy datasets and utility-specific challenges.\nUnderstanding energy management systems and key performance indicators in the power sector.",
+      growth: "Developing analytical thinking and critical reasoning for decision-making based on data insights.\nImproved presentation skills to communicate technical findings to non-technical stakeholders.\nFamiliarity with energy industry standards and sustainability goals.",
+      email: "nurliana@gmail.com",
+      linkedin: "https://www.linkedin.com/in/nur-liana-samsudin-454a15150/",
     },
     {
       achieverRank: "Top 3 Achiever",
@@ -71,36 +40,18 @@ const BestIntern = () => {
       position: "Aemulus Frontend Developer 2023",
       quote: '"Keep moving forward no matter what happens."',
       img: "/assets/images/PirunthaDevi.png",
-      buttonText: "Edit",
-      buttonLink: "",
-      modalContent: {
-        project: [
-          "Developing or enhancing the user interface of semiconductor testing software.",
-          "Creating intuitive and responsive web or desktop applications to simplify testing workflows.",
-          "Participating in the design and implementation of UI/UX improvements based on customer feedback.",
-        ],
-        experience: [
-          "Gaining hands-on experience with frontend frameworks like React.js, Angular, or Vue.js.",
-          "Working with APIs for backend integration using REST or GraphQL.",
-          "Exposure to version control systems (e.g., Git) and code review processes.",
-          "Understanding semiconductor testing workflows and their implications in software design.",
-        ],
-        growth: [
-          "Enhanced skills in crafting user-friendly and visually appealing interfaces.",
-          "Development of creativity and attention to detail in UI/UX design.",
-          "Gaining experience in collaborating with backend developers and product managers.",
-        ],
-        email: "piruntha@gmail.com",
-        linkedin: "https://www.linkedin.com/in/piruntha-devi/",
-      },
+      project: "Developing or enhancing the user interface of semiconductor testing software.\nCreating intuitive and responsive web or desktop applications to simplify testing workflows.\nParticipating in the design and implementation of UI/UX improvements based on customer feedback.",
+      experience: "Gaining hands-on experience with frontend frameworks like React.js, Angular, or Vue.js.\nWorking with APIs for backend integration using REST or GraphQL.\nExposure to version control systems (e.g., Git) and code review processes.\nUnderstanding semiconductor testing workflows and their implications in software design.",
+      growth:"Enhanced skills in crafting user-friendly and visually appealing interfaces.\nDevelopment of creativity and attention to detail in UI/UX design.\nGaining experience in collaborating with backend developers and product managers.",
+      email: "piruntha@gmail.com",
+      linkedin: "https://www.linkedin.com/in/piruntha-devi/",
     },
   ]);
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState({});
+  const [ModalData, setModalData] = useState({});
   const [form] = Form.useForm();
-  const [selectedFile, setSelectedFile] = useState(null);
 
   const navigateToSlide = (index) => {
     setCurrentSlide(index);
@@ -110,29 +61,41 @@ const BestIntern = () => {
     const latestData = bestInternData[index]; // Fetch the latest data dynamically
     setModalData({ ...latestData });
     setIsModalOpen(true);
+  
+    // Directly handle bullet points within form.setFieldsValue
     form.setFieldsValue({
       internName: latestData.internName,
       position: latestData.position,
       quote: latestData.quote,
-      project: latestData.modalContent.project.map((line) => `• ${line}`).join("\n"),
-      experience: latestData.modalContent.experience.map((line) => `• ${line}`).join("\n"),
-      growth: latestData.modalContent.growth.map((line) => `• ${line}`).join("\n"),
-      email: latestData.modalContent.email,
-      linkedin: latestData.modalContent.linkedin,
+      imageURL: latestData.img,
+      project: Array.isArray(latestData.project)
+        ? latestData.project.map((line) => `• ${line}`).join("\n")
+        : latestData.project
+          .split("\n")
+          .map((line) => (line.trim() ? `• ${line.trim()}` : ""))
+          .join("\n"),
+      experience: Array.isArray(latestData.experience)
+        ? latestData.experience.map((line) => `• ${line}`).join("\n")
+        : latestData.experience
+          .split("\n")
+          .map((line) => (line.trim() ? `• ${line.trim()}` : ""))
+          .join("\n"),
+      growth: Array.isArray(latestData.growth)
+        ? latestData.growth.map((line) => `• ${line}`).join("\n")
+        : latestData.growth
+          .split("\n")
+          .map((line) => (line.trim() ? `• ${line.trim()}` : ""))
+          .join("\n"),
+      email: latestData.email,
+      linkedin: latestData.linkedin,
     });
-    setSelectedFile(null); // Reset file input
   };
+  
+
   
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-    }
   };
 
   const handleTextAreaKeyDown = (e, fieldName) => {
@@ -142,7 +105,7 @@ const BestIntern = () => {
       const updatedValue = currentValue + (currentValue.trim() ? "\n• " : "• ");
       form.setFieldValue(fieldName, updatedValue);
     }
-  };
+  };  
 
   const handleSave = () => {
     form
@@ -154,30 +117,23 @@ const BestIntern = () => {
           internName: values.internName,
           position: values.position,
           quote: values.quote,
-          modalContent: {
-            ...updatedInternData[currentSlide].modalContent,
-            project: values.project
-              .split("\n")
-              .map((line) => line.replace(/^•\s*/, "").trim())
-              .filter((line) => line),
-            experience: values.experience
-              .split("\n")
-              .map((line) => line.replace(/^•\s*/, "").trim())
-              .filter((line) => line),
-            growth: values.growth
-              .split("\n")
-              .map((line) => line.replace(/^•\s*/, "").trim())
-              .filter((line) => line),
-            email: values.email,
-            linkedin: values.linkedin,
-          },
+          img: values.imageURL,
+          project: values.project
+            .split("\n")
+            .map((line) => line.replace(/^•\s*/, "").trim())
+            .filter((line) => line),
+          experience: values.experience
+            .split("\n")
+            .map((line) => line.replace(/^•\s*/, "").trim())
+            .filter((line) => line),
+          growth: values.growth
+            .split("\n")
+            .map((line) => line.replace(/^•\s*/, "").trim())
+            .filter((line) => line),
+          email: values.email,
+          linkedin: values.linkedin,
         };
-  
-        if (selectedFile) {
-          const fileURL = URL.createObjectURL(selectedFile);
-          updatedIntern.img = fileURL;
-        }
-  
+
         updatedInternData[currentSlide] = updatedIntern;
         setBestInternData(updatedInternData);
         setIsModalOpen(false);
@@ -187,7 +143,6 @@ const BestIntern = () => {
         console.log("Validate Failed:", errorInfo);
       });
   };
-  
 
   return (
     <div className="best-intern-container">
@@ -218,11 +173,10 @@ const BestIntern = () => {
           position={bestInternData[currentSlide].position}
           quote={bestInternData[currentSlide].quote}
           img={bestInternData[currentSlide].img}
-          buttonText={bestInternData[currentSlide].buttonText}
+          buttonText={buttonText}
           onButtonClick={() => showModal(currentSlide)} // Pass index only
         />
       </div>
-
 
       {/* Modal */}
       <Modal
@@ -231,8 +185,8 @@ const BestIntern = () => {
         footer={null}
         className="A_custom-modal"
         width={800}
-        style = {{
-          top:50,
+        style={{
+          top: 50,
         }}
       >
         <div className="modal-title">
@@ -241,10 +195,16 @@ const BestIntern = () => {
 
         <Form form={form} layout="vertical" className="A_custom-form" style={{ padding: "20px" }}>
 
-           <Form.Item label="Upload Image">
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+          <Form.Item
+            name="imageURL"
+            label="Image URL"
+            rules={[
+              { required: true, message: "Please provide the URL of the intern's image" },
+            ]}
+          >
+            <Input placeholder="Enter the URL of the intern's image" />
           </Form.Item>
-          
+
           <Form.Item
             name="internName"
             label="Intern Name"
@@ -294,7 +254,6 @@ const BestIntern = () => {
               onKeyDown={(e) => handleTextAreaKeyDown(e, "experience")}
             />
           </Form.Item>
-
 
           <Form.Item
             name="growth"
