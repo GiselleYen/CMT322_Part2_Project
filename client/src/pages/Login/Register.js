@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Select, message } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined, IdcardOutlined, CalendarOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined, IdcardOutlined, CalendarOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import { getAuth } from 'firebase/auth';
 import Button from '../../components/button/button';
 import RegisterInputField from '../../components/inputfield/registerinputfield';
 import './Register.css';
+
+// Configure the message duration globally
+message.config({
+  duration: 5, // Set the duration globally to 5 seconds
+});
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -18,6 +23,9 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: '',
   });
+
+  const [passwordVisible, setPasswordVisible] = useState(false);  // State to toggle password visibility
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);  // State to toggle confirm password visibility
 
   const validateForm = () => {
     const { name, matricNumber, yearOfStudy, email, password, confirmPassword } = formData;
@@ -32,8 +40,19 @@ const RegisterPage = () => {
       return false;
     }
 
-    if (password.length < 6) {
-      message.error('Password must be at least 6 characters long');
+    // if (password.length < 6) {
+    //   message.error('Password must be at least 6 characters long');
+    //   return false;
+    // }
+
+    // Password complexity check: at least 12 characters, contains at least one uppercase, one lowercase, and one special character
+    //^(?=.*[a-z]) ensures at least one lowercase letter.
+    //(?=.*[A-Z]) ensures at least one uppercase letter.
+    //(?=.*[!@#$%^&*(),.?":{}|<>]) ensures at least one special character.
+    //.{12,}$ ensures the password is at least 12 characters long.
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/;
+    if (!passwordRegex.test(password)) {
+      message.error('Password must be at least 12 characters long and include a combination of at least one uppercase letter, one lowercase letter, and one special character (e.g. @, &, $ and etc.).', 6);
       return false;
     }
 
@@ -169,27 +188,43 @@ const RegisterPage = () => {
             prefixIcon={<MailOutlined />}
           />
           
-          <RegisterInputField
-            label="Password"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={(e) => handleChange('password', e.target.value)}
-            placeholder="Enter your password"
-            required
-            prefixIcon={<LockOutlined />}
-          />
+          <div className="password-field">
+            <RegisterInputField
+              label="Password"
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={(e) => handleChange('password', e.target.value)}
+              placeholder="Enter your password"
+              required
+              prefixIcon={<LockOutlined />}
+            />
+            <span
+              className="password-eye-icon"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            >
+              {passwordVisible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+            </span>
+          </div>
           
-          <RegisterInputField
-            label="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={(e) => handleChange('confirmPassword', e.target.value)}
-            placeholder="Confirm your password"
-            required
-            prefixIcon={<LockOutlined />}
-          />
+          <div className="password-field">
+            <RegisterInputField
+              label="Confirm Password"
+              type={confirmPasswordVisible ? "text" : "password"}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={(e) => handleChange('confirmPassword', e.target.value)}
+              placeholder="Confirm your password"
+              required
+              prefixIcon={<LockOutlined />}
+            />
+            <span
+              className="password-eye-icon"
+              onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+            >
+              {confirmPasswordVisible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+            </span>
+          </div>
           
           <Button 
             text={loading ? "Registering..." : "Register"} 
