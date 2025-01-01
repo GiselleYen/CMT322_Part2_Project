@@ -24,7 +24,7 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => {
 
       // Get ID token and calculate session expiration (30 minutes)
       const idToken = await user.getIdToken();
-      const expiryTime = new Date().getTime() + 20 * 1000; // 30 minutes in milliseconds
+      const expiryTime = new Date().getTime() + 30 * 60 * 1000
 
       // Determine user role based on email
       const role = user.email === 'cssociety@student.usm.my' ? 'admin' : 'student';
