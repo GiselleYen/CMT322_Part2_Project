@@ -1,4 +1,3 @@
-// sessionchecker.js
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../services/authService';
@@ -11,55 +10,61 @@ function SessionChecker() {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      // If the user is already on the login page, do not show the session expiry modal
+      // No need to handle session expiry on the login page
       return;
     }
+
+    // Save the current page whenever it changes
+    authService.setCurrentPage(location.pathname);
 
     const expiryTime = authService.getSessionExpiryTime();
     const timeLeft = expiryTime - new Date().getTime();
 
     if (timeLeft <= 0) {
-      // If session has already expired
-      setIsModalVisible(true);
-      authService.clearSession();
+      // If the session has already expired, show the modal
+      showModalAndClearSession();
       return;
     }
 
     const timeout = setTimeout(() => {
-      // Trigger session expiry logic when the session is about to expire
-      setIsModalVisible(true);
-      authService.clearSession();
+      // Trigger session expiry logic when session is about to expire
+      showModalAndClearSession();
     }, timeLeft);
 
-    return () => clearTimeout(timeout); // Cleanup the timeout on unmount
-  }, [location.pathname]); // Add location.pathname to dependency array to track route changes
+    return () => clearTimeout(timeout); // Cleanup timeout on unmount
+  }, [location.pathname]);
 
-  const handleOk = () => {
-    // Redirect to the login page when the modal's OK button is clicked
-    navigate('/');
-    setIsModalVisible(false); // Close the modal when redirecting
+  const showModalAndClearSession = () => {
+    authService.clearSession(); // Clear the session
+    setIsModalVisible(true); // Show the modal to notify the user
   };
 
-  // If we're already on the login page, we don't need to show the modal
-  if (location.pathname === '/') {
-    return null; // Don't render anything on the login page
-  }
+  const handleOk = () => {
+    setIsModalVisible(false); // Close the modal
+    navigate('/'); // Redirect to the login page
+  };
 
   return (
     <Modal
-    title="Session Expired"
-    visible={isModalVisible}
-    onOk={handleOk}
-    okText="Login Again"
-    closable={false} // Prevent closing the modal by clicking outside
-    className="A_custom-modal"
-    footer={[
-            <button key="loginAgain" onClick={handleOk} className="save_button" style={{ borderRadius: '8px', padding:'15px' }}>
-                Login Again
-            </button>
-    ]}
-  >
-       <h6 style={{ marginBottom: '30px', textAlign:'center'}}>Your session has expired. Please log in again to continue.</h6>
+      title="Session Expired"
+      visible={isModalVisible}
+      onOk={handleOk}
+      closable={false} // Prevent closing the modal by clicking outside
+      className="A_custom-modal"
+      footer={[
+        <button
+          key="loginAgain"
+          onClick={handleOk}
+          className="save_button"
+          style={{ borderRadius: '8px', padding: '15px' }}
+        >
+          Login Again
+        </button>,
+      ]}
+    >
+      <h6 style={{ marginBottom: '30px', textAlign: 'center' }}>
+        Your session has expired. Please log in again to continue.
+      </h6>
     </Modal>
   );
 }
