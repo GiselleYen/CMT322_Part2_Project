@@ -1,4 +1,4 @@
-export const bestInternServices = {
+export const bestInternService = {
     async getBestInterns() {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/bestInterns`);
         if (!response.ok) throw new Error('Failed to fetch best interns');

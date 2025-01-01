@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Modal, Typography, Form, Input, Button, Radio, Space, message } from "antd";
 import A_ShortCard from "../../../components/a_shortcard/a_shortcard";
 import ManageButton from "../../../components/manageButton/manageButton";
+import { internshipTipService } from "../../../services/InternSportlight/internshipTipService";
 import "./A_InternshipTips.css";
 
 const { Title, Paragraph } = Typography;

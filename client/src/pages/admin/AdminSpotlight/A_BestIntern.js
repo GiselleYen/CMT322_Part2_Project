@@ -3,7 +3,7 @@ import { Modal, Form, Input, message, Button } from 'antd';
 import A_LongCard from "../../../components/a_longcard/a_longcard";
 import ButtonComponent from "../../../components/button/button";
 import "./A_BestIntern.css";
-import { bestInternServices } from '../../../services/InternSportlight/bestInternServices';
+import { bestInternService } from '../../../services/InternSportlight/bestInternService';
 import PropTypes from 'prop-types';
 import { auth } from '../../../config/firebase';
 
