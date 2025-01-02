@@ -24,13 +24,13 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => {
 
       // Get ID token and calculate session expiration (30 minutes)
       const idToken = await user.getIdToken();
-      const expiryTime = new Date().getTime() + 20 * 1000; // 30 minutes in milliseconds
+      const expiryTime = new Date().getTime() + 2 * 60 * 1000; // 30 minutes in milliseconds
 
       // Determine user role based on email
       const role = user.email === 'cssociety@student.usm.my' ? 'admin' : 'student';
 
       // Store session data locally
-      authService.setSession(role, idToken, expiryTime);
+      authService.setSession( role, idToken, expiryTime);
 
       // Update state in parent component
       setIsLoggedIn(true);

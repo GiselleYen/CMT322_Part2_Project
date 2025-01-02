@@ -12,9 +12,9 @@ function Header({ isLoggedIn, role, onLogout }) {
 
   // Effect to validate session only once or when location changes
   useEffect(() => {
-    console.log("Location changed:", location.pathname); // Debug log
+    // console.log("Location changed:", location.pathname); // Debug log
     const validSession = authService.isSessionValid();
-    console.log("Session valid:", validSession); // Debug log
+    // console.log("Session valid:", validSession); // Debug log
 
     if (!validSession && isLoggedIn) {
       console.log("Invalid session, logging out...");

@@ -9,7 +9,7 @@ import SessionChecker from './session/sessionchecker';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(authService.isSessionValid());
-  const [role, setRole] = useState(localStorage.getItem('role') || '');
+  const [role, setRole] = useState(authService.getRole() || '');
 
   useEffect(() => {
     if (isLoggedIn && authService.isSessionValid()) {
