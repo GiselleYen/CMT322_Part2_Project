@@ -6,15 +6,17 @@ class InternshipTip {
   static async findAll() {
     try {
       const snapshot = await db.collection(this.collectionName)
-        .orderBy('createdAt', 'asc')
         .get();
 
-      return snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate(),
-        updatedAt: doc.data().updatedAt?.toDate(),
-      }));
+        console.log('Fetched snapshot:', snapshot);
+        console.log('Fetched docs:', snapshot.docs);
+        return snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate(),
+          updatedAt: doc.data().updatedAt?.toDate(),
+        }));
+        
     } catch (error) {
       throw new Error('Failed to fetch internship tips: ' + error.message);
     }
