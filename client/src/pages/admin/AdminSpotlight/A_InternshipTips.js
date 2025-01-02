@@ -59,80 +59,97 @@ const A_InternshipTips = () => {
     }
   };
 
-  // Handle adding new cards
-  const handleAddNewClick = () => {
-    setModalTip({ imageSrc: "" }); // Reset modal content including imageSrc
-    form.resetFields(); // Reset form fields
+  const handleEditClick = (tip = null) => {
+    if (tip) {
+    // Convert the createdAt field to timestamp format if it's a date object or string
+    const createdAtTimestamp = typeof tip.createdAt === 'string'
+      ? new Date(tip.createdAt).getTime()  // Convert to timestamp if it's a string
+      : tip.createdAt;  // If it's already a timestamp, leave it as is
+
+      // Populating the form for editing an existing tip
+      form.setFieldsValue({
+        title: tip.title,
+        description: tip.description,
+        sharedBy: tip.sharedBy,
+        focusTitle: tip.focusTitle,
+        focusDescription: Array.isArray(tip.focusDescription)
+          ? tip.focusDescription.map((line) => `• ${line}`).join("\n")
+          : tip.focusDescription
+            .split("\n"), // Split string into array by newline
+            // .map((line) => `• ${line}`) // Add bullets to each line
+          //   .join("\n"), // Join into a single string with new lines
+        imageSrc: tip.imageSrc, // Include the image URL for editing
+        createdAt: createdAtTimestamp, // Pass timestamp instead of string
+      });
+      setModalTip(tip);
+      setIsEditMode(true); // Enable edit mode
+    } else {
+      // Resetting the form for adding a new tip
+      form.resetFields();
+      setIsEditMode(false); // Disable edit mode (for adding)
+      setModalTip({ imageSrc: "" }); // Initialize a blank modal tip
+    }
     setIsModalOpen(true);
   };
 
-  const handleEditClick = (card) => {
-    if (card){
-    form.setFieldsValue({
-      title: card.title,
-      description: card.description,
-      sharedBy: card.sharedBy,
-      focusTitle: card.focusTitle,
-      focusDescription: Array.isArray(card.focusDescription)
-        ? card.focusDescription.map((line) => `• ${line}`).join("\n")
-        : card.focusDescription
-          .split("\n") // Split string into array by newline
-          .map((line) => `• ${line}`) // Add bullets to each line
-          .join("\n"), // Join into a single string with new lines
-      imageURL: card.imageSrc, // Include the image URL for editing
-    });
-    setIsEditMode(true);
-  } else {
-    form.resetFields();
-    setIsEditMode(false);
-  }
-  setModalTip(card);
-  setIsModalOpen(true);
-  };
+    const handleSave = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
   
+      if (!user) {
+        message.error("User not authenticated");
+        return;
+      }
+  
+      try {
+        // Validate all fields before saving
+        const values = await form.validateFields();
+        setSaving(true);
+        const token = await user.getIdToken();
 
-  const handleSave = () => {
-    form
-      .validateFields() // Validate all fields before saving
-      .then((values) => {
-        // Process the data only if validation passes
+    // Ensure createdAt is in timestamp format when saving (convert back if necessary)
+    const createdAtTimestamp = typeof values.createdAt === 'string'
+      ? new Date(values.createdAt).getTime()  // Convert to timestamp if it's a string
+      : values.createdAt;  // If it's already a timestamp, leave it as is
+        // Process the data
         const updatedContent = {
           ...modalTip,
           ...values,
+          createdAt: createdAtTimestamp,  // Ensure createdAt is in timestamp format
           focusDescription: values.focusDescription
             .split("\n") // Split lines into an array
             .map((line) => line.replace(/^•\s*/, "")) // Remove bullets and leading spaces
-            .filter((line) => line.trim() !== ""), // Remove empty lines
+            // .filter((line) => line.trim() !== ""), // Remove empty lines
         };
   
-        if (modalTip.title) {
-          // Update existing card
-          setInternTipsData((prevData) =>
-            prevData.map((card) =>
-              card.title === modalTip.title ? updatedContent : card
-            )
-          );
-          message.success("Internship tip updated successfully!"); // Success message for update
-        } else {
-          // Add new card
-          setInternTipsData((prevData) => [
-            ...prevData,
-            {
-              ...updatedContent,
-              imageSrc: modalTip.imageSrc || "", // If no image, set an empty string
-            },
-          ]);
-          message.success("New internship tip added successfully!"); // Success message for adding new tip
-        }
+    // Determine whether we are adding or editing the tip
+    const saveFunction = isEditMode && modalTip.id 
+      ? internshipTipService.updateInternshipTip(modalTip.id, updatedContent, token) 
+      : internshipTipService.addInternshipTip(updatedContent, token);
 
-        setIsModalOpen(false);
-        form.resetFields(); // Reset the form after successful save
-      })
-      .catch((errorInfo) => {
-        // Handle validation errors
-        console.error("Validation Failed:", errorInfo);
-      });
-  }; 
+    const savedTip = await saveFunction;
+
+    // Update the state based on whether we added or updated the tip
+    setInternTipsData((prevData) =>
+      isEditMode
+        ? prevData.map((tip) => (tip.id === savedTip.id ? savedTip : tip)) // Update existing tip
+        : [...prevData, savedTip] // Add new tip
+    );
+
+    message.success(isEditMode ? "Internship tip updated successfully!" : "New internship tip added successfully!");
+
+    // Close the modal and reset form fields after saving
+    setIsModalOpen(false);
+    form.resetFields();
+    // handleCancelClick();
+    fetchInternshipTips();
+  } catch (error) {
+    console.error("Error saving internship tip:", error);
+    message.error("Failed to save internship tip");
+  } finally {
+    setSaving(false); // Set saving back to false after the save operation is complete
+  }
+};
 
   const handleModalClose = () => {
     // Reset the imageSrc to empty when closing the modal
@@ -140,10 +157,7 @@ const A_InternshipTips = () => {
     setIsModalOpen(false);
   };
 
-  // Replace file input with image URL input
-  const handleImageUrlChange = (e) => {
-    setModalTip((prev) => ({ ...prev, imageSrc: e.target.value }));
-  };
+
 
   const chunkArray = (array, size) => {
     const chunks = [];
@@ -153,8 +167,7 @@ const A_InternshipTips = () => {
     return chunks;
   };
 
-  
-  const handleDelete = (key) => {
+  const handleDelete = (id) => {
     Modal.confirm({
       title: "Are you sure you want to delete this Internship Tip?",
       content: "This action cannot be undone.",
@@ -167,17 +180,46 @@ const A_InternshipTips = () => {
       cancelButtonProps: {
         className: "cancel_button",
       },
-      onOk() {
-        setInternTipsData((prevData) => prevData.filter((card) => card.title !== key));
-        message.success ("Internship tip deleted successfully!"); // Display success message after deletion
+      async onOk() {
+        try {
+          const auth = getAuth();
+          const user = auth.currentUser;
+  
+          if (!user) {
+            message.error("User not authenticated");
+            return;
+          }
+  
+          const token = await user.getIdToken();
+          
+          // Call the service to delete the tip
+          await internshipTipService.deleteInternshipTip(id, token);
+  
+          // Update state to reflect deletion
+          setInternTipsData((prevData) => prevData.filter((tip) => tip.id !== id));
+  
+          message.success("Internship tip deleted successfully!"); // Display success message
+        } catch (error) {
+          console.error("Error deleting internship tip:", error);
+          message.error("Failed to delete internship tip. Please try again.");
+        }
       },
       onCancel() {
         console.log("Delete cancelled");
       },
     });
   };
+  
 
-  const cardRows = chunkArray(internTipsData, 3);
+  const tipRows = chunkArray(internTipsData, 3);
+    
+  if (loading) {
+      return (
+        <div className="loading-container">
+          <Spin size="large" />
+        </div>
+      );
+    }
 
   return (
     <div className="internship-tips-container">
@@ -185,23 +227,29 @@ const A_InternshipTips = () => {
         <Title level={2}>Internship Tips</Title>
         <p>Let's get insider tips to make the most of our internship!</p>
       </div>
-      <div className="manage-details-container">
-        <ManageButton type="primary" className="manage_details_button" text="Add Internship Tips" onClick={handleAddNewClick} />
+      <div className="manage-details-container"> 
+        <ManageButton
+          type="primary"
+          className="manage_details_button"
+          text="Add Internship Tips"
+          onClick={() => handleEditClick()} // Call without arguments to add
+        />
       </div>
 
-      {/* Cards Section */}
-      {cardRows.map((row, rowIndex) => (
+
+      {/* tips Section */}
+      {tipRows.map((row, rowIndex) => (
         
         <div className="shortcards-container" key={rowIndex}>
-          {row.map((card, cardIndex) => (
+          {row.map((tip, tipIndex) => (
             <A_ShortCard
-              key={cardIndex}
-              title={card.title}
-              description={card.description}
-              imageSrc={card.imageSrc}
+              key={tipIndex}
+              title={tip.title}
+              description={tip.description}
+              imageSrc={tip.imageSrc}
               buttonText="Edit"
-              onEditClick={() => handleEditClick(card)}
-              onDeleteClick={() => handleDelete(card.title)} // Pass the title as the key to identify the card to delete
+              onEditClick={() => handleEditClick(tip)}
+              onDeleteClick={() => handleDelete(tip.id)} // Pass the title as the key to identify the tip to delete
             />
           ))}
         </div>
@@ -239,6 +287,8 @@ const A_InternshipTips = () => {
               className="save_button" 
               type="primary" 
               onClick={handleSave}
+              loading={saving}
+              disabled={saving}
             >
               Save
             </Button>
@@ -248,7 +298,7 @@ const A_InternshipTips = () => {
         <Form form={form} layout="vertical" className="A_InternTips-form" style={{ padding: "20px" }}>
         <Form.Item
             label="Image URL"
-            name="imageURL"
+            name="imageSrc"
             rules={[
               {
                 required: true,
@@ -258,7 +308,6 @@ const A_InternshipTips = () => {
           >
             <Input
               value={modalTip.imageSrc}
-              onChange={handleImageUrlChange}
               placeholder="Enter an image URL for the internship tip"
             />
           </Form.Item>
