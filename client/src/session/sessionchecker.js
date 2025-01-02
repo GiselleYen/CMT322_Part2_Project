@@ -47,7 +47,7 @@ function SessionChecker() {
   return (
     <Modal
       title="Session Expired"
-      visible={isModalVisible}
+      open={isModalVisible}
       onOk={handleOk}
       closable={false} // Prevent closing the modal by clicking outside
       className="A_custom-modal"

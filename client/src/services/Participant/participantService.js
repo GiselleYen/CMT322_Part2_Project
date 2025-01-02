@@ -12,7 +12,7 @@ export const participantService = {
 
     async getStatistics() {
       const url = `${process.env.REACT_APP_API_URL}/api/participants/statistics`;
-      console.log('Fetching statistics from URL:', url);
+      // console.log('Fetching statistics from URL:', url);
   
       const response = await fetch(url, {
         method: 'GET',

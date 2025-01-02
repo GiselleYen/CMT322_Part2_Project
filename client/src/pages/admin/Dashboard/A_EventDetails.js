@@ -178,7 +178,7 @@ const A_EventDetails = () => {
       <Modal
         className='A_EventScedule-modal'
         title={<div className="modal-title">Manage Talk</div>}
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancelClick}
         footer={[
           <Button 

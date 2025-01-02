@@ -148,6 +148,7 @@ const ParticipantPage = ({ isLoggedIn }) => {
         dataSource={participantData} // Updated to use filtered data
         columns={columns}
         pagination={{ pageSize: 5 }}
+        rowKey={(record) => record.email} // Add this line to use a unique key for each row
       />
     </div>
   );

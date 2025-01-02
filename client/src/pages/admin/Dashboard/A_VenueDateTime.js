@@ -112,7 +112,7 @@ const A_VenueDateTime = () => {
       <Modal
         className="A_VenueDateTime-modal"
         title={<div className="modal-title">Manage Event</div>}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         okText="Save"
