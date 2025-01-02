@@ -20,11 +20,7 @@ function SessionChecker() {
     const expiryTime = authService.getSessionExpiryTime();
     const timeLeft = expiryTime - new Date().getTime();
 
-    if (timeLeft <= 0) {
-      // If the session has already expired, show the modal
-      showModalAndClearSession();
-      return;
-    }
+    
 
     const timeout = setTimeout(() => {
       // Trigger session expiry logic when session is about to expire
@@ -33,6 +29,12 @@ function SessionChecker() {
 
     return () => clearTimeout(timeout); // Cleanup timeout on unmount
   }, [location.pathname]);
+
+  if (timeLeft <= 0) {
+    // If the session has already expired, show the modal
+    showModalAndClearSession();
+    return;
+  }
 
   const showModalAndClearSession = () => {
     authService.clearSession(); // Clear the session
