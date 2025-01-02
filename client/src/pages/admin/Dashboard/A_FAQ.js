@@ -102,6 +102,12 @@ const AdminFAQ = () => {
       okText: "Delete",
       okType: "danger",
       cancelText: "Cancel",
+      okButtonProps: {
+        className: "delete-confirm-button",
+      },
+      cancelButtonProps: {
+        className: "cancel_button",
+      },
       async onOk() {
         try {
           const user = auth.currentUser;
