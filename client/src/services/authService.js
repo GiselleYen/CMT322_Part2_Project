@@ -2,15 +2,12 @@ import Cookies from 'js-cookie';
 
 export const authService = {
   setSession: (role, token, expiryTime) => {
-    // Store the token in a non-HttpOnly cookie (for access in JS)
     Cookies.set('token', token, { expires: 1, sameSite: 'strict', secure: true });
-    
-    // Store the role in cookies, but don't store sensitive user data like userId or email in cookies or localStorage
     Cookies.set('role', role, { expires: 1, sameSite: 'strict', secure: true });
     Cookies.set('expiryTime', expiryTime, { expires: 1, sameSite: 'strict', secure: true });
 
     // Store non-sensitive data like currentPage in localStorage
-    localStorage.setItem('currentPage', window.location.pathname); // Example: Store the last visited page
+    localStorage.setItem('currentPage', window.location.pathname); 
   },
   
     isSessionValid: () => {
