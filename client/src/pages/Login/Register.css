@@ -71,3 +71,18 @@
     text-decoration: underline;
     cursor: pointer; 
   }
+
+  .password-field {
+    position: relative;
+  }
+  
+  .password-eye-icon {
+    position: absolute;
+    top: 65%;
+    right: 20px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 25px;
+    color: #666666;
+    z-index: 2;
+  }

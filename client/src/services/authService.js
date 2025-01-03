@@ -1,25 +1,34 @@
+import Cookies from 'js-cookie';
+
 export const authService = {
-    setSession: (role, token, expiryTime) => {
-      localStorage.setItem('role', role);
-      localStorage.setItem('token', token);
-      localStorage.setItem('expiryTime', expiryTime); // Store the expiry time in localStorage
-      localStorage.setItem('currentPage', window.location.pathname); // Store the current page
-    },
+  setSession: (role, token, expiryTime) => {
+    Cookies.set('token', token, { expires: 1, sameSite: 'strict', secure: true });
+    Cookies.set('role', role, { expires: 1, sameSite: 'strict', secure: true });
+    Cookies.set('expiryTime', expiryTime, { expires: 1, sameSite: 'strict', secure: true });
+
+    // Store non-sensitive data like currentPage in localStorage
+    localStorage.setItem('currentPage', window.location.pathname); 
+  },
   
     isSessionValid: () => {
-      const expiryTime = localStorage.getItem('expiryTime');
-      if (!expiryTime) return false;
+      const expiryTime = Cookies.get('expiryTime');
       return new Date().getTime() < expiryTime; // Check if current time is before the expiry time
     },
   
     getSessionExpiryTime: () => {
-      return localStorage.getItem('expiryTime'); // Return the stored expiry time
+      return Cookies.get('expiryTime'); // Return the  expiry time
+    },
+
+    // Get the user's role
+    getRole: () => {
+      return Cookies.get('role') || null; // Return role from cookies or null if not set
     },
   
     clearSession: () => {
-      localStorage.removeItem('role');
-      localStorage.removeItem('token');
-      localStorage.removeItem('expiryTime'); // Remove the expiry time from localStorage
+      Cookies.remove('email');
+      Cookies.remove('role');
+      Cookies.remove('token');
+      Cookies.remove('expiryTime');
       localStorage.removeItem('currentPage'); // Clear the stored page
     },
   

@@ -9,7 +9,7 @@ function SessionChecker() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' ||location.pathname === '/register' ||location.pathname === '/forgot-pswd' ) {
       // No need to handle session expiry on the login page
       return;
     }
@@ -19,6 +19,8 @@ function SessionChecker() {
 
     const expiryTime = authService.getSessionExpiryTime();
     const timeLeft = expiryTime - new Date().getTime();
+
+    
 
     if (timeLeft <= 0) {
       // If the session has already expired, show the modal
@@ -47,7 +49,7 @@ function SessionChecker() {
   return (
     <Modal
       title="Session Expired"
-      visible={isModalVisible}
+      open={isModalVisible}
       onOk={handleOk}
       closable={false} // Prevent closing the modal by clicking outside
       className="A_custom-modal"

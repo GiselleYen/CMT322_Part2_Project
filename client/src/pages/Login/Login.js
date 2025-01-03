@@ -30,7 +30,7 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => {
       const role = user.email === 'cssociety@student.usm.my' ? 'admin' : 'student';
 
       // Store session data locally
-      authService.setSession(role, idToken, expiryTime);
+      authService.setSession( role, idToken, expiryTime);
 
       // Update state in parent component
       setIsLoggedIn(true);

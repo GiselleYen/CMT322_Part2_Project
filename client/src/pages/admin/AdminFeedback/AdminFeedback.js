@@ -73,8 +73,7 @@ const FeedbackPage = ({ isLoggedIn }) => {
   };
 
   const handleReply = (email, feedback) => {
-    const handleReply = (email, feedback) => {
-      const template = `Hello,
+    const template = `Hello,
     
     Thank you for your feedback. We’ve reviewed your input and would like to address your suggestions:
     
@@ -90,8 +89,8 @@ const FeedbackPage = ({ isLoggedIn }) => {
       const encodedTemplate = encodeURIComponent(template);
     
       // Construct the mailto link
+      // console.log(`mailto:${email}?subject=Response to VCSIRF Feedback&body=${encodedTemplate}`);
       window.location.href = `mailto:${email}?subject=Response to VCSIRF Feedback&body=${encodedTemplate}`;
-    };
     
   };
   

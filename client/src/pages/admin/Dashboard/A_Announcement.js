@@ -129,7 +129,7 @@ const A_Announcement = () => {
       <Modal
         className="A_Announcement-modal"
         title={<div className="modal-title">Manage Announcements</div>}
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCloseModal}
         width={800}
         style={{ top: 50 }}
