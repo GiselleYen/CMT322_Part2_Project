@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Select, message } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined, IdcardOutlined, CalendarOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined, IdcardOutlined, CalendarOutlined, EyeInvisibleOutlined, EyeOutlined  } from '@ant-design/icons';
 import { getAuth } from 'firebase/auth';
 import Button from '../../components/button/button';
 import RegisterInputField from '../../components/inputfield/registerinputfield';
 import './Register.css';
+
 
 // Configure the message duration globally
 message.config({
@@ -45,16 +46,16 @@ const RegisterPage = () => {
     //   return false;
     // }
 
-    // Password complexity check: at least 12 characters, contains at least one uppercase, one lowercase, and one special character
-    //^(?=.*[a-z]) ensures at least one lowercase letter.
-    //(?=.*[A-Z]) ensures at least one uppercase letter.
-    //(?=.*[!@#$%^&*(),.?":{}|<>]) ensures at least one special character.
-    //.{12,}$ ensures the password is at least 12 characters long.
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/;
-    if (!passwordRegex.test(password)) {
-      message.error('Password must be at least 12 characters long and include a combination of at least one uppercase letter, one lowercase letter, and one special character (e.g. @, &, $ and etc.).', 6);
-      return false;
-    }
+      // Password complexity check: at least 12 characters, contains at least one uppercase, one lowercase, and one special character
+      //^(?=.*[a-z]) ensures at least one lowercase letter.
+      //(?=.*[A-Z]) ensures at least one uppercase letter.
+      //(?=.*[!@#$%^&*(),.?":{}|<>]) ensures at least one special character.
+      //.{12,}$ ensures the password is at least 12 characters long.
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/;
+      if (!passwordRegex.test(password)) {
+        message.error('Password must be at least 12 characters long and include a combination of at least one uppercase letter, one lowercase letter, and one special character (e.g. @, &, $ and etc.).', 6);
+        return false;
+      }
 
     if (password !== confirmPassword) {
       message.error('Passwords do not match');
@@ -190,7 +191,7 @@ const RegisterPage = () => {
           
           <div className="password-field">
             <RegisterInputField
-              label="Password"
+              label="Password [Must at least 12 characters long, including at least 1 uppercase, lowercase, number and special character (e.g. #,$,<,%)]"
               type={passwordVisible ? "text" : "password"}
               name="password"
               value={formData.password}

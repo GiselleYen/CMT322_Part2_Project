@@ -1,57 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, message, Button } from 'antd';
+import { Modal, Form, Input, message, Button, Spin } from 'antd';
+import { getAuth } from "firebase/auth";
 import A_LongCard from "../../../components/a_longcard/a_longcard";
 import ButtonComponent from "../../../components/button/button";
 import "./A_BestIntern.css";
-import { bestInternService } from '../../../services/InternSportlight/bestInternService';
+import {bestInternService} from "../../../services/InternSportlight/bestInternService";
 import PropTypes from 'prop-types';
-import { auth } from '../../../config/firebase';
 
-const BestIntern = () => {
+
+const A_BestIntern = () => {
   const buttonText = "Edit";
-  const [bestInternData, setBestInternData] = useState([
-    {
-      achieverRank: "Top 1 Achiever",
-      internName: "Hia Wei Qi",
-      position: "NI RND Software Engineer Intern 2023",
-      quote: '"Great things happen outside your comfort zone—dare to explore!"',
-      img: "/assets/images/HiaWeiQi.png",
-      project: "Developing or enhancing software for test and measurement equipment.\nWorking on modules related to automated testing, signal processing, or hardware integration.\nParticipating in agile development processes like sprint planning, feature implementation, and bug fixing.",
-      experience: "Exposure to software development life cycles (SDLC) and agile methodologies.\nHands-on experience with programming languages such as Python, C++, or LabVIEW.\nCollaborating with cross-functional teams, including hardware and firmware engineers.",
-      growth: "Development of strong problem-solving skills in a technical and structured manner.\nGaining proficiency in debugging and optimizing code for performance and reliability.\nEnhanced communication and teamwork skills through cross-departmental collaborations.",
-      email: "enweiyee0923@gmail.com",
-      linkedin: "https://www.linkedin.com/in/hia-wei-qi-802a87116/",
-    },
-    {
-      achieverRank: "Top 2 Achiever",
-      internName: "Nur Liana binti Samsudin",
-      position: "TNB Data Analytic Intern 2023",
-      quote: '"Data may not always tell the story you want, but it always tells the story you need."',
-      img: "/assets/images/NurLiana.png",
-      project:"Conducting data analysis on operational, customer, or financial datasets.\nSupporting predictive analytics or machine learning projects for energy efficiency or grid optimization.\nBuilding dashboards for real-time monitoring or historical analysis of energy usage.",
-      experience: "Working with tools like Python, R, or SQL for data processing and analysis.\nExperience with business intelligence platforms like Power BI or Tableau.\nExposure to large-scale energy datasets and utility-specific challenges.\nUnderstanding energy management systems and key performance indicators in the power sector.",
-      growth: "Developing analytical thinking and critical reasoning for decision-making based on data insights.\nImproved presentation skills to communicate technical findings to non-technical stakeholders.\nFamiliarity with energy industry standards and sustainability goals.",
-      email: "nurliana@gmail.com",
-      linkedin: "https://www.linkedin.com/in/nur-liana-samsudin-454a15150/",
-    },
-    {
-      achieverRank: "Top 3 Achiever",
-      internName: "Piruntha Devi A/P Moganades",
-      position: "Aemulus Frontend Developer 2023",
-      quote: '"Keep moving forward no matter what happens."',
-      img: "/assets/images/PirunthaDevi.png",
-      project: "Developing or enhancing the user interface of semiconductor testing software.\nCreating intuitive and responsive web or desktop applications to simplify testing workflows.\nParticipating in the design and implementation of UI/UX improvements based on customer feedback.",
-      experience: "Gaining hands-on experience with frontend frameworks like React.js, Angular, or Vue.js.\nWorking with APIs for backend integration using REST or GraphQL.\nExposure to version control systems (e.g., Git) and code review processes.\nUnderstanding semiconductor testing workflows and their implications in software design.",
-      growth:"Enhanced skills in crafting user-friendly and visually appealing interfaces.\nDevelopment of creativity and attention to detail in UI/UX design.\nGaining experience in collaborating with backend developers and product managers.",
-      email: "piruntha@gmail.com",
-      linkedin: "https://www.linkedin.com/in/piruntha-devi/",
-    },
-  ]);
-
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [ModalData, setModalData] = useState({});
+  const [ModalIntern, setModalIntern] = useState({});
+  const [isEditMode, setIsEditMode] = useState(false);
   const [form] = Form.useForm();
+  const [bestInternData, setBestInternData] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    console.log("Previous:", bestInternData); 
+    fetchInterns();
+  }, []);
+  
+  const fetchInterns = async () => {
+    setLoading(true);
+    console.log("fetchingIntern ...");  // Corrected from console() to console.log()
+    try {
+      const data = await bestInternService.getBestInterns();
+      setBestInternData(data);
+      console.log("fetching successfully");  
+      console.log(data);
+      if (data && Array.isArray(data)) {
+        setBestInternData(data);  // Update state
+      } else {
+        console.error("Fetched data is not in the expected format");
+      }
+    } catch (error) {
+      console.error("Error fetching best intern information:", error);
+      message.error("Failed to load best intern information");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const navigateToSlide = (index) => {
     setCurrentSlide(index);
@@ -59,7 +51,17 @@ const BestIntern = () => {
 
   const showModal = (index) => {
     const latestData = bestInternData[index]; // Fetch the latest data dynamically
-    setModalData({ ...latestData });
+    
+    // Convert the createdAt field to timestamp format if it's a date object or string
+    const createdAtTimestamp = 
+      typeof latestData.createdAt === 'string'
+        ? new Date(latestData.createdAt).getTime() // Convert to timestamp if it's a string
+        : latestData.createdAt; // If it's already a timestamp, leave it as is
+  
+    // Update modal intern data with the correct createdAt format
+    setModalIntern({ ...latestData, createdAt: createdAtTimestamp });
+  
+    setIsEditMode(true);
     setIsModalOpen(true);
   
     // Directly handle bullet points within form.setFieldsValue
@@ -88,12 +90,10 @@ const BestIntern = () => {
           .join("\n"),
       email: latestData.email,
       linkedin: latestData.linkedin,
+      createdAt: createdAtTimestamp, // Optionally include in the form if needed
     });
   };
   
-
-  
-
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
@@ -107,42 +107,81 @@ const BestIntern = () => {
     }
   };  
 
-  const handleSave = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        const updatedInternData = [...bestInternData];
-        const updatedIntern = {
-          ...updatedInternData[currentSlide],
-          internName: values.internName,
-          position: values.position,
-          quote: values.quote,
-          img: values.imageURL,
-          project: values.project
-            .split("\n")
-            .map((line) => line.replace(/^•\s*/, "").trim())
-            .filter((line) => line),
-          experience: values.experience
-            .split("\n")
-            .map((line) => line.replace(/^•\s*/, "").trim())
-            .filter((line) => line),
-          growth: values.growth
-            .split("\n")
-            .map((line) => line.replace(/^•\s*/, "").trim())
-            .filter((line) => line),
-          email: values.email,
-          linkedin: values.linkedin,
-        };
-
-        updatedInternData[currentSlide] = updatedIntern;
-        setBestInternData(updatedInternData);
-        setIsModalOpen(false);
-        message.success("Best intern info updated successfully!");
-      })
-      .catch((errorInfo) => {
-        console.log("Validate Failed:", errorInfo);
-      });
+  const handleSave = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+  
+    if (!user) {
+      message.error("User not authenticated");
+      return;
+    }
+  
+    try {
+      // Validate all fields before saving
+      const values = await form.validateFields();
+  
+      setSaving(true); // Show loading spinner during save process
+      const token = await user.getIdToken();
+  
+      // Ensure createdAt is in timestamp format when saving (convert back if necessary)
+      const createdAtTimestamp = 
+        typeof values.createdAt === 'string'
+          ? new Date(values.createdAt).getTime() // Convert to timestamp if it's a string
+          : values.createdAt; // If it's already a timestamp, leave it as is
+  
+      // Prepare the updated intern data
+      const updatedInternData = [...bestInternData];
+      const updatedIntern = {
+        ...updatedInternData[currentSlide],
+        internName: values.internName,
+        position: values.position,
+        quote: values.quote,
+        img: values.imageURL,
+        project: values.project
+          .split("\n")
+          .map((line) => line.replace(/^•\s*/, "").trim())
+          .filter((line) => line),
+        experience: values.experience
+          .split("\n")
+          .map((line) => line.replace(/^•\s*/, "").trim())
+          .filter((line) => line),
+        growth: values.growth
+          .split("\n")
+          .map((line) => line.replace(/^•\s*/, "").trim())
+          .filter((line) => line),
+        email: values.email,
+        linkedin: values.linkedin,
+        createdAt: createdAtTimestamp, // Add the corrected createdAt timestamp
+      };
+  
+      // Save updated data to Firestore
+      await bestInternService.updateBestIntern(
+        updatedIntern.id, // Assuming `id` exists in the intern data
+        updatedIntern,
+        token // Pass the ID token for authenticated saving
+      );
+  
+      // Update local state with the new data
+      updatedInternData[currentSlide] = updatedIntern;
+      setBestInternData(updatedInternData);
+      setIsModalOpen(false);
+      message.success("Best intern info updated successfully!");
+    } catch (error) {
+      console.error("Error saving data:", error);
+      message.error("Failed to save data. Please try again.");
+    } finally {
+      setSaving(false); // Hide loading spinner after save process
+    }
   };
+  
+  
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <div className="best-intern-container">
@@ -167,6 +206,7 @@ const BestIntern = () => {
 
       {/* Display active intern slide */}
       <div>
+      {bestInternData[currentSlide] ? (
         <A_LongCard
           achieverRank={bestInternData[currentSlide].achieverRank}
           internName={bestInternData[currentSlide].internName}
@@ -176,13 +216,44 @@ const BestIntern = () => {
           buttonText={buttonText}
           onButtonClick={() => showModal(currentSlide)} // Pass index only
         />
-      </div>
+      ) : (
+        <div>No data available</div> // Fallback UI when data is not available
+      )}
+    </div>
+
 
       {/* Modal */}
       <Modal
         open={isModalOpen}
         onCancel={handleModalClose}
-        footer={null}
+        footer={  // Modify this section
+          <div
+            style={{
+              marginTop: "-13px",
+              marginRight: "-1px",
+              marginBottom: "10px",
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "8px",
+            }}
+          >
+            <Button
+              className="cancel_button"
+              onClick={handleModalClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="save_button"
+              type="primary"
+              onClick={handleSave}
+              loading={saving}
+              disabled={saving}
+            >
+              Save
+            </Button>
+          </div>
+        }
         className="A_custom-modal"
         width={800}
         style={{
@@ -290,14 +361,9 @@ const BestIntern = () => {
           </Form.Item>
 
         </Form>
-
-        <div className="modal-buttons">
-          <ButtonComponent text="Cancel" onClick={handleModalClose} styleClass="cancel-button" />
-          <ButtonComponent text="Save" onClick={handleSave} styleClass="save-button" />
-        </div>
       </Modal>
     </div>
   );
 };
 
-export default BestIntern;
+export default A_BestIntern;
