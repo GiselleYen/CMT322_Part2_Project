@@ -9,6 +9,8 @@ const bestInternsRoutes = require ('./bestInternsRoutes');
 const faqRoutes = require('./faqRoutes');
 const feedbackRoutes = require('./feedbackRoutes');
 const participantRoutes = require('./participantRoutes');
+const companyRoutes = require('./companyRoutes');
+const resetRoutes = require('./resetRoutes');
 
 const { authenticateUser } = require('../middleware/auth');
 
@@ -30,6 +32,6 @@ router.use('/bestInterns', bestInternsRoutes);
 router.use('/faqs', faqRoutes);
 router.use('/feedback', feedbackRoutes);
 router.use('/participants', participantRoutes);
-
-
+router.use('/companys', companyRoutes);
+router.use('/resets', resetRoutes);
 module.exports = router;
