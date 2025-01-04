@@ -6,6 +6,7 @@ class InternshipTip {
   static async findAll() {
     try {
       const snapshot = await db.collection(this.collectionName)
+        .orderBy("createdAt", "asc")
         .get();
 
         console.log('Fetched snapshot:', snapshot);
