@@ -3,8 +3,17 @@ import './UserSpotlight.css';
 import BestIntern from '../UserSpotlight/BestIntern';
 import InternshipTips from '../UserSpotlight/InternshipTips';
 
+const UserSpotlightPage = ({ isLoggedIn }) => {
+  // Check if the user is logged in
+  if (!isLoggedIn) {
+    return (
+      <div className="login-alert">
+        <h5>Please log in to view the content.</h5>
+      </div>
+    );
+  }
 
-const UserSpotlightPage = () => {
+  // Render the main content if the user is logged in
   return (
     <div className="spotlight-container">
       {/* Header Section */}
