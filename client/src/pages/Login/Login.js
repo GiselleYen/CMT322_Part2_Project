@@ -17,25 +17,25 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
+  
       // Get ID token and calculate session expiration (30 minutes)
       const idToken = await user.getIdToken();
       const expiryTime = new Date().getTime() + 30 * 60 * 1000; // 30 minutes in milliseconds
-
+  
       // Determine user role based on email
       const role = user.email === 'cssociety@student.usm.my' ? 'admin' : 'student';
-
+  
       // Store session data locally
-      authService.setSession( role, idToken, expiryTime);
-
+      authService.setSession(role, idToken, expiryTime);
+  
       // Update state in parent component
       setIsLoggedIn(true);
       setRole(role);
-
+  
       // Redirect based on role
       if (role === 'admin') {
         navigate('/admin');
@@ -45,9 +45,10 @@ const LoginPage = ({ setIsLoggedIn, setRole }) => {
         throw new Error('Invalid email domain. Please use your student email.');
       }
     } catch (error) {
-      setError('Login failed. Please check your email and password.');
+      // Set a generic error message and display it to the user
+      setError('Login failed. Please reenter your email and password.');
       console.error('Login error:', error);
-      message.error(error.message || 'An unexpected error occurred.');
+      message.error('Login failed. Please reenter your email and password.');
     }
   };
 

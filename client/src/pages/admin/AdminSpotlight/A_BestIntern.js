@@ -226,7 +226,34 @@ const A_BestIntern = () => {
       <Modal
         open={isModalOpen}
         onCancel={handleModalClose}
-        footer={null}
+        footer={  // Modify this section
+          <div
+            style={{
+              marginTop: "-13px",
+              marginRight: "-1px",
+              marginBottom: "10px",
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "8px",
+            }}
+          >
+            <Button
+              className="cancel_button"
+              onClick={handleModalClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="save_button"
+              type="primary"
+              onClick={handleSave}
+              loading={saving}
+              disabled={saving}
+            >
+              Save
+            </Button>
+          </div>
+        }
         className="A_custom-modal"
         width={800}
         style={{
@@ -334,22 +361,6 @@ const A_BestIntern = () => {
           </Form.Item>
 
         </Form>
-
-        <div className="modal-buttons">
-          <ButtonComponent text="Cancel" onClick={handleModalClose} styleClass="cancel-button" />
-          <ButtonComponent
-            text={saving ? "Saving..." : "Save"}
-            onClick={handleSave}
-            loading={saving}
-            disabled={
-              saving 
-              // || 
-              // !form.isFieldsTouched(true) || 
-              // form.getFieldsError().some(({ errors }) => errors.length)
-            }
-            styleClass="save-button"
-          />
-        </div>
       </Modal>
     </div>
   );
