@@ -3,9 +3,9 @@ import './CompanyUser.css'; // Reuse the same CSS styles
 import Button from '../../../components/button/button';
 import {Card,Typography,Modal, Title, message} from 'antd'
 import { CompanyService } from "../../../services/Company/CompanyService";
-//import { MailOutlined, LinkedinOutlined } from '@ant-design/icons'
+
 const UserCompanyListPage = () => {
-  // Example company data (you can imagine this data is fetched or passed as props)
+
   const [companyList,setCompanyList] = useState([]);
   const { Paragraph,Title } = Typography;
   const { Meta } = Card;
@@ -131,10 +131,7 @@ const UserCompanyListPage = () => {
         
           <div className="user-modal-container">
 
-            {/* Company Information */}
-           {/*} {currentCompany.logo && (
-          <img src={currentCompany.logo} alt={currentCompany.name} className="user-modal-company-logo" />
-        )}*/}
+
       {currentCompany.companyDetail && (
   <div>
     <strong className="user-company-modal-title">Company Information</strong>
@@ -186,14 +183,6 @@ const UserCompanyListPage = () => {
   </div>
 )}
 
-{/*{currentCompany.hrEmail && (
-  <div>
-    <strong className="user-company-modal-title">HR Email</strong>
-    <Typography>
-      <Paragraph>{currentCompany.hrEmail}</Paragraph>
-    </Typography>
-  </div>
-)}*/}
 <div className="separator-line"></div>
 <div className="user-inquiry-text">
   <Typography>
@@ -212,16 +201,7 @@ const UserCompanyListPage = () => {
     //styleClass="apply-button"
   />
           </div>
-          {/*<div className="company-modal-contact-info">
-            <strong><a href={`mailto:${currentCompany.hrEmail}?subject=Internship Application&body=Dear HR,%0A%0AI am writting for the inquiry about this internship position / apply for this internship position?%0A%0AThank you!`} 
-            target="_blank" rel="noopener noreferrer">
-            <MailOutlined style={{ marginRight: 8 }} /> Email
-              <br />
-            </a></strong>
-            <strong><a href={currentCompany.linkedin} target="_blank" rel="noopener noreferrer">
-            <LinkedinOutlined style={{ marginRight: 8 }} />  LinkedIn
-            </a></strong>{" "}
-            </div>*/}
+     
             
           </div>
         

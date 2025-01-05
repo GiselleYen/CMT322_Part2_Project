@@ -245,7 +245,6 @@ const formatBulletsToText = (text) => {
                 className="company-card"
                 hoverable
                 cover={<img alt={company.name} src={company.logo} className="company-logo" />}
-                //onClick={() => openCompanyDetails(company)}
               >
                 <div className="card-content">
                 <Meta title={<div className="company-name">{company.name}</div>}
@@ -255,7 +254,6 @@ const formatBulletsToText = (text) => {
                   <Button
                     text="Edit"
                     onClick={() => {
-                      //e.stopPropagation(); // Stop propagation when clicking Edit button
                       openModal('edit', company);
                     }}
                     icon={<EditOutlined />}
@@ -264,8 +262,6 @@ const formatBulletsToText = (text) => {
                   <Button
                     text="Delete"
                     onClick={() => {
-                      //e.stopPropagation(); // Stop propagation when clicking Delete button
-        
                       handleDelete(company.id);
                     }}
                     icon={<DeleteOutlined />}
@@ -324,102 +320,3 @@ const formatBulletsToText = (text) => {
   );
 };
 export default CompanyManagePage;
-
-
-{/* Modal for viewing company details */}
-{/*<Modal
-title={
-  <div 
-    style={{ 
-      color: 'var(--primary-color)', 
-      fontSize: '24px', 
-      fontWeight: 'bold', 
-      textAlign: 'center',
-      marginTop: '8px',
-      marginBottom: '10px',
-    }}
-  >
-    {currentCompany.name}
-  </div>
-}
-visible={isModalOpen}
-onCancel={closeModal}
-footer={null} // Removing default footer buttons (you can add custom ones if needed)
-style={{ top: 50}}
-width={1000}*/}
-//>{/*<div className='modal-overlay'>*/}
-//<div className="modal-container">
-{/*{currentCompany.logo && (
-    <img src={currentCompany.logo} alt={currentCompany.name} className="modal-company-logo" />
-  )}*/}
-{/*{currentCompany.companyDetail && (
-<div>
-<strong className="company-modal-title">Company Information</strong>
-<Typography>
-<Paragraph>{currentCompany.companyDetail}</Paragraph>
-</Typography>
-</div>
-
-)}
-
-{currentCompany.jobResponsibility && (
-<div>
-<strong className="company-modal-title">Job Responsibilities</strong>
-<Typography>
-<ul>*/}
-    {/* Split the string by newline character and map over it to create list items */}
-    {/*{currentCompany.jobResponsibility.split('\n').map((responsibilities, index) => (
-      <li key={index}>{responsibilities}</li> // Each benefit is rendered as a list item
-    ))}
-  </ul>
-</Typography>
-</div>
-)}
-
-{currentCompany.jobRequirement && (
-<div>
-<strong className="company-modal-title">Job Requirement/Qualification</strong>
-<Typography>
-<ul>*/}
-    {/* Split the string by newline character and map over it to create list items */}
-    {/*{currentCompany.jobRequirement.split('\n').map((requirement, index) => (
-      <li key={index}>{requirement}</li> // Each benefit is rendered as a list item
-    ))}
-  </ul>
-</Typography>
-</div>
-)}
-
-{currentCompany.benefitsOffered && (
-<div>
-<strong className="company-modal-title">Benefits Offered</strong>
-<Typography>
-<ul>*/}
-    {/* Split the string by newline character and map over it to create list items */}
-    {/*{currentCompany.benefitsOffered.split('\n').map((benefit, index) => (
-      <li key={index}>{benefit}</li> // Each benefit is rendered as a list item
-    ))}
-  </ul>
-</Typography>
-</div>
-)}
-
-{currentCompany.hrEmail && (
-<div>
-<strong className="company-modal-title">HR Email</strong>
-<Typography>
-<Paragraph>{currentCompany.hrEmail}</Paragraph>
-</Typography>
-</div>
-)}*/}
-{/*{currentCompany.linkedin && (
-<div>
-<strong className="company-modal-title">LinkedIn</strong>
-<Typography>
-<Paragraph>{currentCompany.linkedin}</Paragraph>
-</Typography>
-</div>
-)}*/}
-//</div>
-{/*</div>*/}
-//</Modal>
