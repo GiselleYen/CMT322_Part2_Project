@@ -1,7 +1,7 @@
 const { db } = require('../config/firebase');
 
 class Reset {
-  static collectionName = 'users';
+  static collectionName = 'users';  // Static property to store the name of the Firestore collection
 
   // Utility function to convert string dates to Date objects
   static convertToDate(date) {
@@ -16,12 +16,13 @@ class Reset {
     return null;  // Return null if the date is invalid or not available
   }
 
-  static async findAll() {
+  static async findAll() { // Method to retrieve all users from Firestore
     try {
+      // Query to fetch all users ordered by their name in ascending order
       const snapshot = await db.collection(this.collectionName)
       .orderBy('name', 'asc')
         .get();
-      return snapshot.docs.map(doc => ({
+      return snapshot.docs.map(doc => ({ // Return the documents in a formatted array with added createdAt and updatedAt properties converted to Date objects
         id: doc.id,
         ...doc.data(),
         createdAt: this.convertToDate(doc.data().createdAt), // Convert to Date
@@ -32,5 +33,5 @@ class Reset {
     }
   }
 }
-
+// Export the Reset class for use in other parts of the application
 module.exports = Reset;
