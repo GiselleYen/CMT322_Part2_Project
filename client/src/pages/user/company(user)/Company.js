@@ -5,7 +5,7 @@ import {Card,Typography,Modal, Title, message} from 'antd'
 import { CompanyService } from "../../../services/Company/CompanyService";
 
 const UserCompanyListPage = () => {
-
+// State for managing the current company's data
   const [companyList,setCompanyList] = useState([]);
   const { Paragraph,Title } = Typography;
   const { Meta } = Card;
@@ -16,15 +16,15 @@ const UserCompanyListPage = () => {
 
   // State for search query
   const [searchQuery, setSearchQuery] = useState('');
-
+// useEffect hook to trigger fetching companies when the component mounts
   useEffect(() => {
     fetchEvents();
   }, []);
-
+// Function to fetch company data from the API
   const fetchEvents = async () => {
     try {
-      const data = await CompanyService.getCompany();
-      setCompanyList(data);
+      const data = await CompanyService.getCompany(); // Make an API call to fetch company data
+      setCompanyList(data); // Update the company list state with the fetched data
     } catch (error) {
       console.error('Error fetching companys:', error);
       message.error('Failed to load companys');

@@ -1,20 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateUser } = require('../middleware/auth');
-const eventController = require('../controllers/companyController');
+const { authenticateUser } = require('../middleware/auth'); // Middleware to authenticate the user before performing protected routes
+const eventController = require('../controllers/companyController'); // Controller that handles the business logic related to company data
 
-// Public routes
+// Public routes - No authentication required
 router.get('/', eventController.getCompanys);
 
 // Protected routes - require authentication
-router.use(authenticateUser);
+router.use(authenticateUser); // Ensures the user is authenticated for the following routes
 
-// Event management routes
-router.post('/', eventController.createCompany);
-router.put('/:id', eventController.updateCompany);
-router.delete('/:id', eventController.deleteCompany);
+// Company management routes
+router.post('/', eventController.createCompany); // Create a new company
+router.put('/:id', eventController.updateCompany); // Update a company by ID
+router.delete('/:id', eventController.deleteCompany); // Delete a company by ID
 
-// Bulk operations route (if needed)
-//outer.put('/bulk/update', eventController.bulkUpdateEvents);
 
-module.exports = router;
+module.exports = router; // Export the router so it can be used in the main server file
