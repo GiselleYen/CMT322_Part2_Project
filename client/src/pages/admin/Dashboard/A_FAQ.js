@@ -17,6 +17,7 @@ const AdminFAQ = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFaq, setCurrentFaq] = useState(null);
   const [form] = Form.useForm();
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchFaqs = async () => {
@@ -49,47 +50,49 @@ const AdminFAQ = () => {
   };
 
   const handleSave = async () => {
-    form
-      .validateFields()
-      .then(async (values) => {
-        const user = auth.currentUser;
-        if (!user) {
-          message.error("User not authenticated");
-          return;
-        }
+    try {
+      const values = await form.validateFields();
+      setSaving(true);
 
-        const token = await user.getIdToken();
-        const updatedValues = {
-          ...values,
-          updatedAt: new Date().toISOString(),
-        };
+      const user = auth.currentUser;
+      if (!user) {
+        message.error("User not authenticated");
+        return;
+      }
 
-        if (currentFaq) {
-          await faqService.updateFaq({ ...currentFaq, ...updatedValues }, token);
-          setFaqs((prevFaqs) =>
-            prevFaqs
-              .map((faq) =>
-                faq.id === currentFaq.id ? { ...faq, ...updatedValues } : faq
-              )
-              .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-          );
-          message.success("FAQ updated successfully!");
-        } else {
-          const newFaq = await faqService.addFaq(updatedValues, token);
-          setFaqs((prevFaqs) =>
-            [...prevFaqs, newFaq].sort(
-              (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+      const token = await user.getIdToken();
+      const updatedValues = {
+        ...values,
+        updatedAt: new Date().toISOString(),
+      };
+
+      if (currentFaq) {
+        await faqService.updateFaq({ ...currentFaq, ...updatedValues }, token);
+        setFaqs((prevFaqs) =>
+          prevFaqs
+            .map((faq) =>
+              faq.id === currentFaq.id ? { ...faq, ...updatedValues } : faq
             )
-          );
-          message.success("New FAQ added successfully!");
-        }
+            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+        );
+        message.success("FAQ updated successfully!");
+      } else {
+        const newFaq = await faqService.addFaq(updatedValues, token);
+        setFaqs((prevFaqs) =>
+          [...prevFaqs, newFaq].sort(
+            (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+          )
+        );
+        message.success("New FAQ added successfully!");
+      }
 
-        form.resetFields();
-        setIsModalOpen(false);
-      })
-      .catch((error) => {
-        console.error("Validation error:", error);
-      });
+      form.resetFields();
+      setIsModalOpen(false);
+    } catch (error) {
+      message.error("Failed to save FAQ.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleModalClose = () => {
@@ -99,6 +102,7 @@ const AdminFAQ = () => {
   const handleDelete = async (id) => {
     Modal.confirm({
       title: "Are you sure you want to delete this FAQ?",
+      content: "This action cannot be undone.",
       okText: "Delete",
       okType: "danger",
       cancelText: "Cancel",
@@ -116,7 +120,6 @@ const AdminFAQ = () => {
           setFaqs((prevFaqs) => prevFaqs.filter((faq) => faq.id !== id));
           message.success("FAQ deleted successfully!");
         } catch (error) {
-          console.error("Error deleting FAQ:", error);
           message.error("Failed to delete FAQ.");
         }
       },
@@ -189,6 +192,7 @@ const AdminFAQ = () => {
       </div>
 
       <Modal
+        className="A_FAQ-modal"
         title={
           <span className="modal-title">
             {currentFaq ? "Edit FAQ" : "Add FAQ"}
@@ -196,12 +200,24 @@ const AdminFAQ = () => {
         }
         open={isModalOpen}
         onCancel={handleModalClose}
-        footer={null}
-        className="A_custom-modal"
-        width={800}
-        style={{
-          top: 50,
-        }}
+        footer={[
+          <Button 
+            key="cancel" 
+            className="cancel_button" 
+            onClick={handleModalClose} 
+            disabled={saving}>
+            Cancel
+          </Button>,
+          <Button
+            key="save"
+            className="save_button"
+            type="primary"
+            onClick={handleSave}
+            loading={saving}
+          >
+            Save
+          </Button>,
+        ]}
       >
         <Form
           form={form}
@@ -228,7 +244,7 @@ const AdminFAQ = () => {
           </Form.Item>
         </Form>
 
-        <div className="modal-buttons">
+        {/* <div className="modal-buttons">
           <ButtonComponent
             text="Cancel"
             onClick={handleModalClose}
@@ -238,8 +254,9 @@ const AdminFAQ = () => {
             text="Save"
             onClick={handleSave}
             styleClass="save-button"
+            disabled={saving}
           />
-        </div>
+        </div> */}
       </Modal>
     </div>
   );

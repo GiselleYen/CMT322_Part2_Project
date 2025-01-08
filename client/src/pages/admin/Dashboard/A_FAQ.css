@@ -46,4 +46,10 @@
     align-items: center; /* Ensures content is centered vertically */
 }
 
-  
+.A_FAQ-modal .ant-modal-header{
+  background-color: #efeff8;
+}
+
+.A_FAQ-modal .ant-modal-content{
+  background-color: #efeff8;
+}
