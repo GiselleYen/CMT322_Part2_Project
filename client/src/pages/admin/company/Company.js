@@ -292,7 +292,7 @@ const handleDelete = async (key) => {
         visible={isModalOpen} // Controls the modal's visibility
         onCancel={closeModal}  // Closes the modal when cancel button is clicked
         onOk={handleSubmit}  // Submits the form when OK button is clicked
-        okText={modalType === 'add' ? 'Add' : 'Save'} // Dynamic text for the OK button
+        okText={modalType === 'add' ? 'Save' : 'Save'} // Dynamic text for the OK button
         cancelText="Cancel"
         okButtonProps={{ className: 'save_button', loading: saving,disabled:saving}}
         cancelButtonProps={{ className: 'cancel_button',disabled:saving }}
