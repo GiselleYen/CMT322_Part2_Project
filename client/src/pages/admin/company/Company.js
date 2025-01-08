@@ -1,4 +1,4 @@
-import React, { useState,useRef,useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import './Company.css';
 import Button from '../../../components/button/button';
 import {Modal, Form, Input,Card, Button as AntButton,Typography, Title,message,Spin} from 'antd'
@@ -32,6 +32,7 @@ const CompanyManagePage = () => {
   const [form] = Form.useForm();
   // State for the list of companies
   const [companyList, setCompanyList] = useState([]);
+  const [saving, setSaving] = useState(false);
  // useEffect hook to trigger fetching companies when the component mounts
   useEffect(() => {
     fetchCompanys();
@@ -88,6 +89,7 @@ const CompanyManagePage = () => {
       }
 // Validate the form fields and retrieve the values
       const values = await form.validateFields();
+      setSaving(true);
 // Retrieve the ID token for the authenticated user
       const token = await user.getIdToken();
 // Format the form values, converting bullet points back into plain text
@@ -111,6 +113,8 @@ const CompanyManagePage = () => {
     } catch (error) {  // Handle errors during the add or update operation
       console.error(`Error ${modalType === 'add' ? 'adding' : 'updating'} company:`, error);
       message.error(`Failed to ${modalType === 'add' ? 'add' : 'update'} company`);
+    }finally {
+      setSaving(false);
     }
   };
 
@@ -290,8 +294,8 @@ const handleDelete = async (key) => {
         onOk={handleSubmit}  // Submits the form when OK button is clicked
         okText={modalType === 'add' ? 'Add' : 'Save'} // Dynamic text for the OK button
         cancelText="Cancel"
-        okButtonProps={{ className: 'save_button' }}
-        cancelButtonProps={{ className: 'cancel_button' }}
+        okButtonProps={{ className: 'save_button', loading: saving,disabled:saving}}
+        cancelButtonProps={{ className: 'cancel_button',disabled:saving }}
         style={{ top: 50 }}
         width={800}
       > {/* Form for managing company details */}
