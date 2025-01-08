@@ -280,6 +280,7 @@ const A_InternshipTips = () => {
             <Button 
               className="cancel_button" 
               onClick={handleModalClose}
+              disabled={saving}
             >
               Cancel
             </Button>

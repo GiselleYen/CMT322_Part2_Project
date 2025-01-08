@@ -240,6 +240,7 @@ const A_BestIntern = () => {
             <Button
               className="cancel_button"
               onClick={handleModalClose}
+              disabled={saving}
             >
               Cancel
             </Button>
