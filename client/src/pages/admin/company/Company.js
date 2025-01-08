@@ -286,7 +286,7 @@ const handleDelete = async (key) => {
       </div>
       
       {/* Add/Edit Modal */}
-      <Modal
+      <Modal  
         className="company-manage-modal"
         title={<span className="modal-title-custom">{modalType === 'add' ? 'Add New Company' : 'Edit Company'}</span>}
         visible={isModalOpen} // Controls the modal's visibility
